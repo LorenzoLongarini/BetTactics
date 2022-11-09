@@ -1,4 +1,4 @@
-<div style="display: flex; justify-content: center;">
+<p align:"center">
 <img src="https://github.com/LorenzoLongarini/BetTactics/blob/main/BetTacticsLogo.png">
-</div>
+</p>
 # BetTactics
