@@ -28,3 +28,5 @@ draw_away(Team,Result):-findall(Team,matchSA(_,Team,"DRAW",_,_),Result).
 num_draw_away(Team,DrawAway):-draw_away(Team,Result),length(Result,DrawAway).
 
 total_draws(Team, Result):-num_draw_home(Team,DrawHome), num_draw_away(Team,DrawAway), Result is DrawHome + DrawAway.
+
+total_matches_played(Team, Result):- total_win(Team, Result1), total_lost(Team, Result2), total_draws(Team, Result3), Result is  Result1 + Result2 + Result3.
