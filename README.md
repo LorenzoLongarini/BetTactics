@@ -26,7 +26,8 @@
 ## Authors
 - [*Lorenzo Longarini*](https://github.com/LorenzoLongarini)
 - [*Loris Ramovini*](https://github.com/lorisramovini)
-#Sitography
+
+## Sitography
 - Tau : http://tau-prolog.org/manual/a-simple-tutorial
 - Electron: https://www.electronjs.org/docs/latest/
 - Swi Prolog: https://www.swi-prolog.org/
