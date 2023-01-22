@@ -7,8 +7,9 @@
 <a href="#How to install">How to install</a>&nbsp•
 <a href="#How to use">How to use</a>&nbsp•
 <a href="#How it works">How it works</a>&nbsp•
+ <a href="#Sitography">Sitography</a>&nbsp•
 <a href="#Authors">Authors</a>
-<a href="#Sitography">Sitography</a>
+
 </p>
 <br>
 <br>
@@ -23,12 +24,13 @@
 
 ## How it works
 
-## Authors
-- [*Lorenzo Longarini*](https://github.com/LorenzoLongarini)
-- [*Loris Ramovini*](https://github.com/lorisramovini)
-
 ## Sitography
 - Tau : http://tau-prolog.org/manual/a-simple-tutorial
 - Electron: https://www.electronjs.org/docs/latest/
 - Swi Prolog: https://www.swi-prolog.org/
 - Mermaid: https://mermaid-js.github.io/mermaid/#/
+
+## Authors
+- [*Lorenzo Longarini*](https://github.com/LorenzoLongarini)
+- [*Loris Ramovini*](https://github.com/lorisramovini)
+
