@@ -7,7 +7,7 @@
 <a href="#How-to-install">How to install</a>&nbsp•
 <a href="#How-to-use">How to use</a>&nbsp•
 <a href="#How-it-works">How it works</a>&nbsp•
- <a href="#Sitography">Sitography</a>&nbsp•
+<a href="#Sitography">Sitography</a>&nbsp•
 <a href="#Authors">Authors</a>
 
 </p>
@@ -17,7 +17,7 @@
 
 
 ## Introduction
-
+BetTactics is a simple desktop application based on [*Electron*](https://www.electronjs.org/docs/latest/) that allows users to predict some possible results of a particular Serie A's match. BetTactics uses [*football-data.org*](https://www.football-data.org/) API's to manipulate data and give results. 
 ## How to install
 
 ## How to use
