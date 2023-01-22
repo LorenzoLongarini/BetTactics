@@ -13,11 +13,17 @@
 <br>
 <br>
 </div>
-# Introduction
-# How to install
-# How to use
-# How it works
-# Authors
+
+
+## Introduction
+
+## How to install
+
+## How to use
+
+## How it works
+
+## Authors
 - [*Lorenzo Longarini*](https://github.com/LorenzoLongarini)
 - [*Loris Ramovini*](https://github.com/lorisramovini)
 #Sitography
