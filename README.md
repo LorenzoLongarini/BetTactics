@@ -4,9 +4,9 @@
 </p>
 <p align="center">
 <a href="#Introduction">Introduction</a>&nbsp•
-<a href="#How to install">How to install</a>&nbsp•
-<a href="#How to use">How to use</a>&nbsp•
-<a href="#How it works">How it works</a>&nbsp•
+<a href="#How-to-install">How to install</a>&nbsp•
+<a href="#How-to-use">How to use</a>&nbsp•
+<a href="#How-it-works">How it works</a>&nbsp•
  <a href="#Sitography">Sitography</a>&nbsp•
 <a href="#Authors">Authors</a>
 
