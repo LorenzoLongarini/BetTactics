@@ -1,9 +1,9 @@
 {
-  "name": "BetTactics",
+  "name": "bet_tactics",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
-  "author": "Lorenzo",
+  "author": "Lorenzo and Loris",
   "license": "GPL-3.0",
   "scripts": {
     "start": "electron .",
