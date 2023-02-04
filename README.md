@@ -1,6 +1,6 @@
 <div>
 <p align="center">
-<img src="https://github.com/LorenzoLongarini/BetTactics/blob/main/BetTacticsLogo.png">
+<img src="https://github.com/LorenzoLongarini/BetTactics/blob/main/screen/img/BetTacticsLogo.png">
 </p>
 <p align="center">
 <a href="#Introduction">Introduction</a>&nbsp•
