@@ -21,7 +21,15 @@ BetTactics is a simple desktop application based on [*Electron*](https://www.ele
 ## How to install
 
 ## How to use
+First of all, run:
+```
+npm install -g npm
+```
+to install Node.js, then you can start the application with the follow command in command prompt:
 
+```
+npm run start
+```
 ## How it works
 
 ## Sitography
