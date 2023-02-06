@@ -94,30 +94,34 @@ start_matches_SA(X,W):-told.
 
 
 
-
-
 %restituisce la classifica del campionato
 list_json_array_results(List_res):-
   setup_call_cleanup(
     http_open('http://api.football-data.org/v4/competitions/SA/standings', In, [request_header('X-Auth-Token'='8ca899dc4862498d90e40bd53563f247'),request_header('Accept'='application/json')]),
       %prende lo stream che viene salvato in In e lo salva in List
-      json_read_dict(In,List_res),
+     json_read_dict(In,List_res),
     close(In)
   ).
 
-take_results([]).
-take_results([H|T]) :-
-  write('classifica('),
-  write(H.table.position), write('..................... '),
-  %write(H.won), write(', '),
-  %write(H.drawer), write(', '),
-  %write(H.lost),writeln(').'),
-
-  take_results(T).
+%seleziona solo la prima table(quella TOTAL)
+select_first(X,R):-
+  member(X,R),!.
 
 start_results :-
       tell('database_RESULTS_SA.pl'),
       list_json_array_results(List_res),
-      take_results(List_res.standings),
+      maplist(get_dict(table), List_res.get(standings), R),
+      
+      select_first(X,R),
+      member(Y,X),
+      %get_dict(table,List_res.get(standings),Y),
+      
+      write('classifica('),
+      write(Y.position), write(',"'),
+      write(Y.team.name),write('", '),
+      write(Y.team.id),write(', "'),
+      write(Y.form),writeln('").'),
+
     fail.
 start_results :- told.
+
