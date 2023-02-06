@@ -25,7 +25,11 @@ First of all, run:
 ```
 npm install -g npm
 ```
-to install Node.js, then you can start the application with the follow command in command prompt:
+to install Node.js, now you should install electron with:
+```
+npm install electron --save-dev
+```
+then you can start the application with the follow command in command prompt:
 
 ```
 npm run start
