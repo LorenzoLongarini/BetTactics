@@ -80,3 +80,40 @@ percent_draws(Team, Result):-
     total_matches_played(Team, Result2),
     Result3 is Result1 / Result2,
     Result is Result3 * 100.
+
+played_home(Team,Result):-
+    findall(Team,matchSA(Team,_,_,_,_),Result).
+not_played_home(Team,Result):-
+    findall(Team,matchSA(Team,_,null,_,_),Result).
+tot_played_home(Team,Play_home):-
+    played_home(Team,Result),
+    not_played_home(Team,Result1),
+    length(Result,X),
+    length(Result1,Y),
+    Play_home is X - Y.
+
+percent_win_home(Team,Result):-
+    num_winner_home(Team,Ris1),
+    tot_played_home(Team,Ris2),
+    Ris3 is Ris1 / Ris2,
+    Result is Ris3 * 100.
+
+
+next_match(X,Y):-
+    findall([Home,Away],matchSA(Home,Away,null,_,_),Result),
+    member([X,Y],Result),!.
+
+cerca(RisPercentuale):-
+    next_match(X,Y),
+    findall(Casa,classifica(Casa,X,_,_),Result),
+    findall(Trasferta,classifica(Trasferta,Y,_,_),Result2),
+    (( Result < Result2 ) -> Ris is Result2-Result; Ris is Result-Result2),
+    RisPercentuale is Ris*5.
+
+%la differenza tra due squadre va da 1 a 19
+
+
+forma(Team,X,Y):-
+    classifica(_,Team,_,X),
+    split_string(X,',',',',Y)
+    .
