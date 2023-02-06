@@ -7,7 +7,7 @@ list_json_array_h2h(List_h2h):-
       %prende lo stream che viene salvato in In e lo salva in List
       json_read_dict(In,List_h2h),
     close(In)
-��).
+).
 
 take_h2h([]).
 take_h2h([H|T]) :-
@@ -33,7 +33,7 @@ list_json_array_scorer(ListScorers):-
       %prende lo stream che viene salvato in In e lo salva in List
       json_read_dict(In,ListScorers),
     close(In)
-��).
+).
 
 take_scorers_list([]).
 take_scorers_list([H|T]) :-
@@ -51,7 +51,7 @@ start_scorer :-
       list_json_array_scorer(ListScorers),
      take_scorers_list(ListScorers.scorers),
     fail.
-start_scorer�:-�told.
+start_scorer:-told.
 
 %restituisce le ultime 10 gare di una squadra
 list_json_array_matches_SA(ListMatchesSA,X):-
@@ -63,7 +63,7 @@ list_json_array_matches_SA(ListMatchesSA,X):-
       %prende lo stream che viene salvato in In e lo salva in List
       json_read_dict(In,ListMatchesSA),
     close(In)
-��).
+).
 
 take_matches_SA_list([]).
 take_matches_SA_list([H|T]) :-
@@ -87,7 +87,7 @@ start_matches_SA(X,W) :-
       list_json_array_matches_SA(ListMatchesSA,W),
      take_matches_SA_list(ListMatchesSA.matches),
     fail.
-start_matches_SA(X,W)�:-�told.
+start_matches_SA(X,W):-told.
 
 
 
