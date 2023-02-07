@@ -90,12 +90,42 @@ tot_played_home(Team,Play_home):-
     length(Result1,Y),
     Play_home is X - Y.
 
-percent_win_home(Team,Result):-
+percent_win_home(Team,Result, Cod):-
+    consult('BetTacticsScript.pl'),
+    start_matches_SA(Team,Cod),
+    atom_string(Team, Team1),
+    atom_concat('database_MATCHES-',Team1,Result1),
+    atom_concat(Result1,'.pl',Result2),
+    consult(Result2),
     num_winner_home(Team,Ris1),
     tot_played_home(Team,Ris2),
     Ris3 is Ris1 / Ris2,
     Result is Ris3 * 100.
 
+
+played_away(Team,Result):-
+
+    findall(Team,matchSA(_,Team,_,_,_),Result).
+not_played_away(Team,Result):-
+    findall(Team,matchSA(_,Team,null,_,_),Result).
+tot_played_away(Team,Play_away):-
+    played_away(Team,Result),
+    not_played_away(Team,Result1),
+    length(Result,X),
+    length(Result1,Y),
+    Play_away is X - Y.
+    
+percent_win_away(Team,Result, Cod):-
+    consult('BetTacticsScript.pl'),
+    start_matches_SA(Team,Cod),
+    atom_string(Team, Team1),
+    atom_concat('database_MATCHES-',Team1,Result1),
+    atom_concat(Result1,'.pl',Result2),
+    consult(Result2),
+    num_winner_away(Team,Ris1),
+    tot_played_away(Team,Ris2),
+    Ris3 is Ris1 / Ris2,
+    Result is Ris3 * 100.
 
 next_match(X,Y, TeamName, Cod):-
     consult('BetTacticsScript.pl'),
@@ -107,32 +137,48 @@ next_match(X,Y, TeamName, Cod):-
     findall([Home,Away],matchSA(Home,Away,null,_,_),Result),
     member([X,Y],Result),!.
 
-cerca(RisPercentuale,TeamName, Cod):-
-    next_match(X,Y,TeamName,Cod),
+cerca(RisPercentuale,TeamName, Cod, Home, Away):-
+    next_match(Home,Away,TeamName,Cod),
     start_results,
     consult('database_RESULTS_SA.pl'),
-    findall(Casa,classifica(Casa,X,_,_),Result),
-    findall(Trasferta,classifica(Trasferta,Y,_,_),Result2),
+    findall(Casa,classifica(Casa,Home,_,_),Result),
+    findall(Trasferta,classifica(Trasferta,Away,_,_),Result2),
     (( Result < Result2 ) -> Ris is Result2-Result; Ris is Result-Result2),
-    ((TeamName==X)-> RisPercentuale is Ris*5;RisPercentuale1 is Ris*5, RisPercentuale is 100 - RisPercentuale1).
-    %((TeamName==Y)-> RisPercentuale1 is Ris*5, RisPercentuale is 100 - RisPercentuale1).
+    ((TeamName==Home)-> RisPercentuale is Ris*5;RisPercentuale1 is Ris*5, RisPercentuale is 100 - RisPercentuale1).
+    
+    
 
 %la differenza tra due squadre va da 1 a 19
 
-count([],_,0).
-count([Elem|Tail],Elem,Count):-
-    count(Tail,Elem,TailCount),
-    Count is TailCount + 1.
 
+count_occurrences([], _, 0).
+count_occurrences([H|T], String, Count) :-
+    (   H = String
+    ->  count_occurrences(T, String, TailCount),
+        Count is TailCount + 1
+    ;   count_occurrences(T, String, Count)
+    ).
 
-forma(Team,X,NumW):-
+forma(Team, NumW):-
     consult('BetTacticsScript.pl'),
     start_results,
     consult('database_RESULTS_SA.pl'),
     classifica(_,Team,_,X),
     split_string(X,',',',',Y),
-    count(Y,"W",NumW).
-   % NumW is NumW / 5 * 100.
+    count_occurrences(Y,"W",NumW1),
+    NumW2 is NumW1 / 5, 
+    NumW is NumW2 * 100.
+
+total_win_percent(Team, Cod, Win):-
+    forma(Team, NumW),
+    cerca(RisPercentuale, Team, Cod, Home, Away),
+    percent_win(Team, Result),
+    
+    ((Team == Home)->percent_win_home(Team, X1, Cod);  percent_win_away(Team, X1, Cod)),
+         
+    Win2 is NumW + RisPercentuale + Result + X1,
+    write(Home), write('-'),write(Away),
+    Win is Win2 / 4.
 
 
 
