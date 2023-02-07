@@ -3,17 +3,7 @@ h1 {
     margin-left: 20px;
 }
 
-.selection {
+.center {
     display: flex;
     justify-content: center;
-}
-
-.command {
-    display: flex;
-    justify-content: center;
-}
-
-.logo {
-    display: flex;
-    justify-content: right;
 }

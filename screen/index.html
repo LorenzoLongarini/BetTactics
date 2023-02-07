@@ -5,54 +5,55 @@
   <meta charset="UTF-8" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
   <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
+  <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-tauF'" />
+  <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-tauF'" /> -->
   <link rel="stylesheet" href="./style/style.css">
+  <script type="text/javascript" src="./js/tau-prolog.js"></script>
+  <script type="text/javascript" src="./js/tau_functions.js"></script>
   <title>BetTactics</title>
+
 </head>
 
 <body>
-  <div class="logo">
+  <div class="center">
     <img src="./img/BetTacticsLogo.png" alt="Logo">
   </div>
-  <h1>BetTactics</h1>
-  <div class="command">
-    <h1>Select a match</h1>
+  <div class="center">
+    <h1>CHOOSE TEAM</h1>
   </div>
-  <div class="selection">
+  <div class="center">
     <select class="form-select" aria-label="Default select example">
-      <option value="AC Milan">AC Milan</option>
-      <option value="AS Roma">AS Roma</option>
-      <option value="Atalanta">Atalanta</option>
-      <option value="Bologna">Bologna</option>
-      <option value="Cagliari">Cagliari</option>
-      <option value="Fiorentina">Fiorentina</option>
-      <option value="Inter Milan">Inter Milan</option>
-      <option value="Juventus">Juventus</option>
-      <option value="Lazio">Lazio</option>
-      <option value="Napoli">Napoli</option>
-      <option value="Sampdoria">Sampdoria</option>
-      <option value="Sassuolo">Sassuolo</option>
-      <option value="Verona">Verona</option>
+      <option value="113">SSC Napoli</option>
+      <option value="108">FC Internazionale Milano</option>
+      <option value="100">AS Roma/option>
+      <option value="110">SS Lazio</option>
+      <option value="102">Atalanta BC</option>
+      <option value="109">Juventus FC</option>
+      <option value="98">AC Milan</option>
+      <option value="586">Torino FC</option>
+      <option value="115">Udinese Calcio</option>
+      <option value="103">Bologna FC 1909</option>
+      <option value="5911">AC Monza</option>
+      <option value="445">Empoli FC</option>
+      <option value="99">ACF Fiorentina</option>
+      <option value="5890">US Lecce</option>
+      <option value="471">US Sassuolo Calcio</option>
+      <option value="455">US Salernitana 1919</option>
+      <option value="488">Spezia Calcio</option>
+      <option value="450">Hellas Verona FC</option>
+      <option value="584">UC Sampdoria</option>
+      <option value="457">US Cremonese</option>
     </select>
-    VS
-    <select class="form-select" aria-label="Default select example">
-      <option value="AC Milan">AC Milan</option>
-      <option value="AS Roma">AS Roma</option>
-      <option value="Atalanta">Atalanta</option>
-      <option value="Bologna">Bologna</option>
-      <option value="Monza">Monza</option>
-      <option value="Fiorentina">Fiorentina</option>
-      <option value="Inter Milan">Inter Milan</option>
-      <option value="Juventus">Juventus</option>
-      <option value="Lazio">Lazio</option>
-      <option value="Napoli">Napoli</option>
-      <option value="Sampdoria">Sampdoria</option>
-      <option value="Sassuolo">Sassuolo</option>
-      <option value="Verona">Verona</option>
-    </select>
+
   </div>
+  <div id=show_result1>
+    <h3>results show here...</h3>
+  </div>
+  <button>Click to run</button>
   <p></p>
   <!--<p id = "info"></p>-->
 </body>
-<script src="./renderer.js"></script>
+<!--<script src="./renderer.js"></script>-->
+
 
 </html>
