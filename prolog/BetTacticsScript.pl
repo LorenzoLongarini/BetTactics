@@ -24,7 +24,7 @@ start_h2h :-
       list_json_array_h2h(List_h2h),
       take_h2h(List_h2h.matches),
     fail.
-start_h2h�:-�told.
+start_h2h:-told.
 
 %restituisce la lista marcatori della serie A
 list_json_array_scorer(ListScorers):-

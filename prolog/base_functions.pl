@@ -98,6 +98,7 @@ percent_win_home(Team,Result):-
 
 
 next_match(X,Y, TeamName, Cod):-
+    consult('BetTacticsScript.pl'),
     start_matches_SA(TeamName,Cod),
     atom_string(TeamName, TeamName1),
     atom_concat('database_MATCHES-',TeamName1,Result1),
