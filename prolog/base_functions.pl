@@ -107,12 +107,15 @@ next_match(X,Y, TeamName, Cod):-
     findall([Home,Away],matchSA(Home,Away,null,_,_),Result),
     member([X,Y],Result),!.
 
-cerca(RisPercentuale):-
-    next_match(X,Y),
+cerca(RisPercentuale,TeamName, Cod):-
+    next_match(X,Y,TeamName,Cod),
+    start_results,
+    consult('database_RESULTS_SA.pl'),
     findall(Casa,classifica(Casa,X,_,_),Result),
     findall(Trasferta,classifica(Trasferta,Y,_,_),Result2),
     (( Result < Result2 ) -> Ris is Result2-Result; Ris is Result-Result2),
-    RisPercentuale is Ris*5.
+    ((TeamName==X)-> RisPercentuale is Ris*5;RisPercentuale1 is Ris*5, RisPercentuale is 100 - RisPercentuale1).
+    %((TeamName==Y)-> RisPercentuale1 is Ris*5, RisPercentuale is 100 - RisPercentuale1).
 
 %la differenza tra due squadre va da 1 a 19
 
@@ -123,6 +126,9 @@ count([Elem|Tail],Elem,Count):-
 
 
 forma(Team,X,NumW):-
+    consult('BetTacticsScript.pl'),
+    start_results,
+    consult('database_RESULTS_SA.pl'),
     classifica(_,Team,_,X),
     split_string(X,',',',',Y),
     count(Y,"W",NumW).
