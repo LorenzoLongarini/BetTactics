@@ -95,10 +95,9 @@ percent_win_home(Team,Result):-
     tot_played_home(Team,Ris2),
     Ris3 is Ris1 / Ris2,
     Result is Ris3 * 100.
+   
 
-
-next_match(X,Y, TeamName, Cod):-
-    start_matches_SA(TeamName,Cod),
+next_match(X,Y, TeamName):-
     atom_string(TeamName, TeamName1),
     atom_concat('database_MATCHES-',TeamName1,Result1),
     atom_concat(Result1,'.pl',Result2),
@@ -128,4 +127,4 @@ forma(Team,X,NumW):-
    % NumW is NumW / 5 * 100.
 
 
-
+    
