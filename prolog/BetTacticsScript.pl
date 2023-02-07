@@ -87,7 +87,7 @@ start_matches_SA(X,W) :-
       list_json_array_matches_SA(ListMatchesSA,W),
      take_matches_SA_list(ListMatchesSA.matches),
     fail.
-start_matches_SA(X,W):-told.
+start_matches_SA(_,_):-told.
 
 
 

@@ -1,3 +1,5 @@
+:- multifile(matchSA/5).
+
 take_scorers(X,Y):-marcatore(X,Y,_,_).
 take_assistmen(X,W):-marcatore(X,_,W,_).
 take_penalties(X,Z):-marcatore(X,_,_,Z).
@@ -5,6 +7,7 @@ take_penalties(X,Z):-marcatore(X,_,_,Z).
 
 
 winner_home(Team,Result):-
+    
     findall(Team,matchSA(Team,_,"HOME_TEAM",_,_),Result).
 num_winner_home(Team,WinHome):-
     winner_home(Team,Result),
@@ -177,7 +180,7 @@ total_win_percent(Team, Cod, Win):-
     ((Team == Home)->percent_win_home(Team, X1, Cod);  percent_win_away(Team, X1, Cod)),
          
     Win2 is NumW + RisPercentuale + Result + X1,
-    write(Home), write('-'),write(Away),
+    write(Home), write(' - '),write(Away),
     Win is Win2 / 4.
 
 
