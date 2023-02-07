@@ -114,7 +114,6 @@ start_results :-
       
       select_first(X,R),
       member(Y,X),
-      %get_dict(table,List_res.get(standings),Y),
       
       write('classifica('),
       write(Y.position), write(',"'),

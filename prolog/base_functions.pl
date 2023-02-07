@@ -2,9 +2,7 @@ take_scorers(X,Y):-marcatore(X,Y,_,_).
 take_assistmen(X,W):-marcatore(X,_,W,_).
 take_penalties(X,Z):-marcatore(X,_,_,Z).
 
-count([],0).
-count([1|T],N) :-
-    count(T,N1), N is N1 + 1.
+
 
 winner_home(Team,Result):-
     findall(Team,matchSA(Team,_,"HOME_TEAM",_,_),Result).
@@ -97,9 +95,13 @@ percent_win_home(Team,Result):-
     tot_played_home(Team,Ris2),
     Ris3 is Ris1 / Ris2,
     Result is Ris3 * 100.
+   
 
-
-next_match(X,Y):-
+next_match(X,Y, TeamName):-
+    atom_string(TeamName, TeamName1),
+    atom_concat('database_MATCHES-',TeamName1,Result1),
+    atom_concat(Result1,'.pl',Result2),
+    consult(Result2),
     findall([Home,Away],matchSA(Home,Away,null,_,_),Result),
     member([X,Y],Result),!.
 
@@ -112,8 +114,17 @@ cerca(RisPercentuale):-
 
 %la differenza tra due squadre va da 1 a 19
 
+count([],_,0).
+count([Elem|Tail],Elem,Count):-
+    count(Tail,Elem,TailCount),
+    Count is TailCount + 1.
 
-forma(Team,X,Y):-
+
+forma(Team,X,NumW):-
     classifica(_,Team,_,X),
-    split_string(X,',',',',Y)
-    .
+    split_string(X,',',',',Y),
+    count(Y,"W",NumW).
+   % NumW is NumW / 5 * 100.
+
+
+    
