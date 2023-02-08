@@ -19,23 +19,53 @@
 ## Introduction
 BetTactics is a simple desktop application based on [*Electron*](https://www.electronjs.org/docs/latest/) that allows users to predict some possible results of a particular Serie A's match. BetTactics uses [*football-data.org*](https://www.football-data.org/) API's to manipulate data and give results. 
 ## How to install
+To use BetTactics you can copy url link in VSCode and copy the project. 
 
-## How to use
-First of all, run:
+
+---
+Now, you can run the program via SWI-Prolog or via Electron.
+If you want to use SWI-Prolog, you should read [*SWI-Prolog Documentation*](https://www.swi-prolog.org/), then go to the section  <a href="#How-to-use">'how to use'</a>. 
+
+
+---
+On the other hand, if you prefer to use Electron you need to install Node.js in your pc. 
+
+In windows, you can open terminal and run:
 ```
 npm install -g npm
 ```
-to install Node.js, now you should install electron with:
+you can check Node.js is correctly installed in your pc running:
+```
+npm -v
+```
+Now you have to install electron, so you have to run:
 ```
 npm install electron --save-dev
 ```
+## How to use
+
 then you can start the application with the follow command in command prompt:
 
 ```
 npm run start
 ```
 ## How it works
+To download all matches of a particular team you should run: 
+```
+start_matches_SA("YOUR_TEAM","YOUR_TEAM_CODE").
+```
+the following sequence diagram explain what happens:
+```mermaid
+sequenceDiagram
+	
 
+	User->> SWI-Prolog: start_matches_SA()
+	SWI-Prolog-->>football-data: http_open()
+	football-data-->> DB: GET data
+	DB-->> football-data: return data
+	football-data-->>SWI-Prolog: data in stream
+	SWI-Prolog->>User: create database
+```
 ## Sitography
 - Tau : http://tau-prolog.org/manual/a-simple-tutorial
 - Electron: https://www.electronjs.org/docs/latest/
