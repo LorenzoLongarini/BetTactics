@@ -46,7 +46,6 @@ take_penalties(X,Z):-marcatore(X,_,_,Z).
 
 
 winner_home(Team,Result):-
-    consult('database_MATCHES-AS Roma.pl'),
     findall(Team,matchSA(Team,_,"HOME_TEAM",_,_),Result).
 num_winner_home(Team,WinHome):- 
     winner_home(Team,Result),

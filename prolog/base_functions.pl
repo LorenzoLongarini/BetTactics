@@ -183,5 +183,6 @@ total_win_percent(Team, Cod, Win):-
     write(Home), write(' - '),write(Away),
     Win is Win2 / 4.
 
-
-
+%over/under
+%odd or even
+%goal or nogoal
