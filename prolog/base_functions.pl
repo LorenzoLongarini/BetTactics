@@ -184,5 +184,90 @@ total_win_percent(Team, Cod, Win):-
     Win is Win2 / 4.
 
 %over/under
+sum_list([], 0).
+sum_list([H|T], Sum) :-
+   sum_list(T, Rest),
+   ((H == null) -> Sum is 0 + Rest;  Sum is H + Rest).
+  
+
+goal_team_home_scored(TeamName, Final):-
+    atom_string(TeamName, TeamName1),
+    atom_concat('database_MATCHES-',TeamName1,Result1),
+    atom_concat(Result1,'.pl',Result2),
+    consult(Result2),
+    findall(Goal, matchSA(TeamName, _, _, Goal,_), Result),
+    tot_played_home(TeamName, PlayedSum),
+    sum_list(Result, Sum),
+    Final is Sum / PlayedSum.
+
+goal_team_away_scored(TeamName, Final):-
+    atom_string(TeamName, TeamName1),
+    atom_concat('database_MATCHES-',TeamName1,Result1),
+    atom_concat(Result1,'.pl',Result2),
+    consult(Result2),
+    findall(Goal, matchSA(_, TeamName, _, _,Goal), Result),
+    tot_played_away(TeamName, PlayedSum),
+    sum_list(Result, Sum),
+    Final is Sum / PlayedSum.
+
+goal_team_home_sub(TeamName, Final):-
+    atom_string(TeamName, TeamName1),
+    atom_concat('database_MATCHES-',TeamName1,Result1),
+    atom_concat(Result1,'.pl',Result2),
+    consult(Result2),
+    findall(Goal, matchSA(TeamName, _, _, _,Goal), Result),
+    tot_played_home(TeamName, PlayedSum),
+    sum_list(Result, Sum),
+    Final is Sum / PlayedSum.
+
+goal_team_away_sub(TeamName, Final):-
+    atom_string(TeamName, TeamName1),
+    atom_concat('database_MATCHES-',TeamName1,Result1),
+    atom_concat(Result1,'.pl',Result2),
+    consult(Result2),
+    findall(Goal, matchSA(_, TeamName, _ ,Goal,_), Result),
+    tot_played_away(TeamName, PlayedSum),
+    sum_list(Result, Sum),
+    Final is Sum / PlayedSum.
+
+over_under(TeamName, Cod, OverUnder):-
+    next_match(Home, Away, TeamName, Cod),
+    goal_team_home_scored(Home, MediaHomeScored),
+    goal_team_away_scored(Away, MediaAwayScored),
+    goal_team_home_sub(Home, MediaHomeSub),
+    goal_team_away_sub(Away, MediaAwaySub),
+    HomeGoals is MediaHomeScored + MediaAwaySub,
+    MediaHomeGoals is HomeGoals / 2,
+    AwayGoals is MediaHomeSub + MediaAwayScored,
+    MediaAwayGoals is AwayGoals / 2,
+    write(Home),write(' - '),write(Away),
+    OverUnder is MediaHomeGoals + MediaAwayGoals.
+
 %odd or even
+sum_list_oddeven([], 0, 0).
+sum_list_oddeven([H|T], Even, Odd) :-
+    sum_list_oddeven(T, Even1, Odd1),
+    ((H \== null) -> VAL is H mod 2, ),
+    ((H == null) -> Even is Even1 + 0, Odd is Odd1 + 0;  
+    (VAL == 1) -> Odd is Odd1 + 1; 
+    Even is Even1 + 1).
+
+goal_home_oddeven(TeamName, Even, Odd):-
+    atom_string(TeamName, TeamName1),
+    atom_concat('database_MATCHES-',TeamName1,Result1),
+    atom_concat(Result1,'.pl',Result2),
+    consult(Result2),
+    findall(Goal, matchSA(TeamName, _, _, Goal,_), Result),
+    tot_played_home(TeamName, PlayedSum),
+    sum_list_oddeven(Result, Even, Odd).
+    %Final is Sum / PlayedSum.
+
+
 %goal or nogoal
+goal_or_not(TeamName, Cod):-
+    next_match(Home, Away, TeamName, Cod),
+    goal_team_home_scored(Home, MediaHomeScored),
+    goal_team_away_scored(Away, MediaAwayScored),
+    ((MediaHomeScored >= 1 , MediaAwayScored >= 1) -> 
+        write('Entrambe le squadre segneranno un goal');
+        write('Una delle due squadre non segnera')).
