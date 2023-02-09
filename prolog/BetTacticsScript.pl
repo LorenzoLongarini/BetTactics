@@ -53,60 +53,64 @@ start_scorer :-
     fail.
 start_scorer:-told.
 
-%restituisce le ultime 10 gare di una squadra
-list_json_array_matches_SA(ListMatchesSA,X):-
-  atom_concat('http://api.football-data.org/v4/teams/',X,Y),
-  atom_concat(Y,'/matches?competitions=2019',Z),
 
+%genera un knowledge base con tutte le partite di una determinata squadra
+
+%prende in ingresso il codice di una squadra, 
+%genera uno Stream che viene trasformato in un dict che viene restituito dalla funzione
+list_json_array_matches_SA(ListMatchesSA,Code):-
+  atom_concat('http://api.football-data.org/v4/teams/',Code,X),
+  atom_concat(X,'/matches?competitions=2019',Url),
   setup_call_cleanup(
-      http_open(Z, In, [request_header('X-Auth-Token'='8ca899dc4862498d90e40bd53563f247'),request_header('Accept'='application/json')]),
-      %prende lo stream che viene salvato in In e lo salva in List
-      json_read_dict(In,ListMatchesSA),
-    close(In)
+      http_open(Url,
+      Stream,
+      [request_header('X-Auth-Token'='8ca899dc4862498d90e40bd53563f247'),request_header('Accept'='application/json')]),
+      json_read_dict(Stream,ListMatchesSA),
+    close(Stream)
 ).
 
+%prende in ingresso la lista generata dalla funzione precedente e scrive all'interno tutte le gare di serie A di quella squadra
 take_matches_SA_list([]).
 take_matches_SA_list([H|T]) :-
   write('matchSA('),
-  
   writeq(H.homeTeam.name),  write(', '),
- 
   writeq(H.awayTeam.name), write(', '),
   writeq(H.score.winner), write(', '),
   writeq(H.score.fullTime.home),write(', '),
   writeq(H.score.fullTime.away),writeln(').'),
-
-
   take_matches_SA_list(T).
 
-
-start_matches_SA(X,W) :-
- atom_concat('database_MATCHES-',X,Y),
- atom_concat(Y,'.pl',Z),
-      tell(Z),
-      list_json_array_matches_SA(ListMatchesSA,W),
-     take_matches_SA_list(ListMatchesSA.matches),
-    fail.
+%prende in ingresso il nome di una squadra e il codice associato ad essa e crea un nuovo file che verrà popolato
+%grazie alle due funzioni precedenti
+start_matches_SA(Team,Code) :-
+ atom_concat('database_MATCHES-',Team,X),
+ atom_concat(X,'.pl',FileName),
+      tell(FileName),
+      list_json_array_matches_SA(ListMatchesSA,Code),
+      take_matches_SA_list(ListMatchesSA.matches),
+      fail.
 start_matches_SA(_,_):-told.
 
 
 
 
-
-
-%restituisce la classifica del campionato
+%genera un knowledge base con la classifica del campionato
+ 
+%genera uno Stream che viene trasformato in un dict che viene restituito dalla funzione
 list_json_array_results(List_res):-
   setup_call_cleanup(
-    http_open('http://api.football-data.org/v4/competitions/SA/standings', In, [request_header('X-Auth-Token'='8ca899dc4862498d90e40bd53563f247'),request_header('Accept'='application/json')]),
-      %prende lo stream che viene salvato in In e lo salva in List
-     json_read_dict(In,List_res),
-    close(In)
+      http_open('http://api.football-data.org/v4/competitions/SA/standings',
+      Stream,
+      [request_header('X-Auth-Token'='8ca899dc4862498d90e40bd53563f247'),request_header('Accept'='application/json')]),
+      json_read_dict(Stream,List_res),
+      close(Stream)
   ).
 
-%seleziona solo la prima table(quella TOTAL)
+%dato che sono presenti tre table, questa funzione effettua la selezione della prima table
 select_first(X,R):-
   member(X,R),!.
 
+%crea un nuovo file che verrà popolato grazie alle due funzioni precedenti
 start_results :-
       tell('database_RESULTS_SA.pl'),
       list_json_array_results(List_res),
@@ -121,6 +125,6 @@ start_results :-
       write(Y.team.id),write(', "'),
       write(Y.form),writeln('").'),
 
-    fail.
+      fail.
 start_results :- told.
 

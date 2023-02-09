@@ -199,7 +199,7 @@ function queryRG1() {
     //session.consult('./js/database_MATCHES-AS Roma.pl');
     console.log(session);
     //var query = `forma('"AS Roma"',  X).`;
-    var query = `matchSA('"AS Roma"',Y,Z,W,P).`;
+    var query = 'matchSA("AS Roma",Y,Z,W,P).';
     session.query(query, {
         success: (goal) => console.log("goal: " + goal),
         error: (err) => console.log("err: " + err),
@@ -212,8 +212,8 @@ function queryRG1() {
         if (msg !== false && msg !== null) {
             show_result1.innerHTML += '<div>' + msg + '</div>'
         } else {
-            //msg === 'porco il tuo dio ';
-            show_result1.innerHTML += '<div>' + 'dio cane' + '</div>'
+
+            show_result1.innerHTML += '<div>' + 'error' + '</div>'
         }
     }
 
