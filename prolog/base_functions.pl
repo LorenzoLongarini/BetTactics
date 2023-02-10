@@ -350,3 +350,55 @@ goal_or_not(TeamName, Cod):-
         write(' - '),
         writeln(Away),
         write('Una delle due squadre non segnera')).
+
+goal_do_home(TeamName,Sum):-
+    atom_string(TeamName, TeamName1),
+    atom_concat('database_',TeamName1,Result1),
+    atom_concat(Result1,'.pl',Result2),
+    consult(Result2),
+    use_module(Result2),
+    findall(Goal, Result2:matchSA(TeamName, _, _, Goal,_), Result),
+    sum_list(Result, Sum).
+
+goal_do_away(TeamName,Sum):-
+    atom_string(TeamName, TeamName1),
+    atom_concat('database_',TeamName1,Result1),
+    atom_concat(Result1,'.pl',Result2),
+    consult(Result2),
+    use_module(Result2),
+    findall(Goal, Result2:matchSA(_, TeamName, _, _ ,Goal), Result),
+    sum_list(Result, Sum).
+
+total_goal_do_team(TeamName,Result):-
+    goal_do_home(TeamName,Sum1),
+    goal_do_away(TeamName,Sum2),
+    Result is Sum1 + Sum2.
+
+goal_sub_home(TeamName,Sum):-
+    atom_string(TeamName, TeamName1),
+    atom_concat('database_',TeamName1,Result1),
+    atom_concat(Result1,'.pl',Result2),
+    consult(Result2),
+    use_module(Result2),
+    findall(Goal, Result2:matchSA(TeamName, _, _, _,Goal), Result),
+    sum_list(Result, Sum).
+
+goal_sub_away(TeamName,Sum):-
+    atom_string(TeamName, TeamName1),
+    atom_concat('database_',TeamName1,Result1),
+    atom_concat(Result1,'.pl',Result2),
+    consult(Result2),
+    use_module(Result2),
+    findall(Goal,Result2:matchSA(_, TeamName, _,Goal,_), Result),
+    sum_list(Result, Sum).
+
+total_goal_sub_team(TeamName, Result):-
+    goal_sub_home(TeamName,Sum1),
+    goal_sub_away(TeamName,Sum2),
+    Result is Sum1 + Sum2.
+
+%differenza goal 
+goal_difference_team(TeamName,Result):-
+    total_goal_do_team(TeamName,Result1),
+    total_goal_sub_team(TeamName, Result2),
+    Result is Result1 - Result2.
