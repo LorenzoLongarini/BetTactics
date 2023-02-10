@@ -70,18 +70,16 @@ list_json_array_matches_SA(ListMatchesSA,Code):-
 ).
 
 %prende in ingresso la lista generata dalla funzione precedente e scrive all'interno tutte le gare di serie A di quella squadra
-take_matches_SA_list([], _).
-take_matches_SA_list([H|T], Team) :-
+take_matches_SA_list([]).
+take_matches_SA_list([H|T]) :-
  
   write('matchSA('),
-  % write(Team),
-  % write('('),
-  writeq(H.homeTeam.name),  write(', '),
-  writeq(H.awayTeam.name), write(', '),
+  writeq(H.homeTeam.shortName),  write(', '),
+  writeq(H.awayTeam.shortName), write(', '),
   writeq(H.score.winner), write(', '),
   writeq(H.score.fullTime.home),write(', '),
   writeq(H.score.fullTime.away),writeln(').'),
-  take_matches_SA_list(T, Team).
+  take_matches_SA_list(T).
 
 %prende in ingresso il nome di una squadra e il codice associato ad essa e crea un nuovo file che verrà popolato
 %grazie alle due funzioni precedenti
@@ -92,8 +90,9 @@ start_matches_SA(Team,Code) :-
       write(':- module(\'database_'),
       write(Team),
       writeln('.pl\', [matchSA/5]).'),
+      writeln(':- multifile(matchSA/5).'),
       list_json_array_matches_SA(ListMatchesSA,Code),
-      take_matches_SA_list(ListMatchesSA.matches, Team),
+      take_matches_SA_list(ListMatchesSA.matches),
       fail.
 start_matches_SA(_,_):-told.
 
@@ -120,17 +119,14 @@ select_first(X,R):-
 start_results :-
       tell('database_RESULTS_SA.pl'),
       list_json_array_results(List_res),
-      maplist(get_dict(table), List_res.get(standings), R),
-      
+      maplist(get_dict(table), List_res.get(standings), R), 
       select_first(X,R),
       member(Y,X),
-      
       write('classifica('),
       write(Y.position), write(',"'),
-      write(Y.team.name),write('", '),
+      write(Y.team.shortName),write('", '),
       write(Y.team.id),write(', "'),
       write(Y.form),writeln('").'),
-
       fail.
 start_results :- told.
 

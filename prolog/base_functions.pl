@@ -1,91 +1,95 @@
+% :- multifile 'database_Atalanta.pl':matchSA/5.
+% :- multifile 'database_Napoli.pl':matchSA/5.
+:- multifile(matchSA/5).
 take_scorers(X,Y):-marcatore(X,Y,_,_).
 take_assistmen(X,W):-marcatore(X,_,W,_).
 take_penalties(X,Z):-marcatore(X,_,_,Z).
 
-
-winner_home(TeamName,Cod, Result):-
-    %consult('database_MATCHES-AS Roma.pl'),
-    start_matches_SA(TeamName,Cod),
+start(TeamName, Cod, Result2):-
+    consult('BetTacticsScript.pl'),
+    start_matches_SA(TeamName, Cod),
     atom_string(TeamName, TeamName1),
-    atom_concat('database_MATCHES-',TeamName1,Result1),
-    atom_concat(Result1,'.pl',Result2),
+    atom_concat('database_', TeamName1, Result1),
+    atom_concat(Result1, '.pl', Result2),
     consult(Result2),
-    findall(TeamName,matchSA(TeamName, _, "HOME_TEAM", _, _),Result).
-num_winner_home(Team,Cod,WinHome):-
-    winner_home(Team,Cod,Result),
+    use_module(Result2).
+
+
+winner_home(Team,Result, Cod, Result2):-   
+    findall(Team,Result2:matchSA(Team,_,"HOME_TEAM",_,_),Result).
+num_winner_home(Team,WinHome, Cod, Result2):-
+    winner_home(Team,Result, Cod, Result2),
     length(Result,WinHome).
 
-winner_away(TeamName,Cod,Result):-
-start_matches_SA(TeamName,Cod),
-    atom_string(TeamName, TeamName1),
-    atom_concat('database_MATCHES-',TeamName1,Result1),
-    atom_concat(Result1,'.pl',Result2),
-    consult(Result2),
-    findall(TeamName,matchSA(_,TeamName,"AWAY_TEAM",_,_),Result).
-num_winner_away(Team,Cod,WinAway):-
-    winner_away(Team,Cod,Result),
+winner_away(Team,Result, Cod, Result2):-
+    findall(Team,Result2:matchSA(_,Team,"AWAY_TEAM",_,_),Result).
+num_winner_away(Team,WinAway, Cod, Result2):-
+    winner_away(Team,Result, Cod, Result2),
     length(Result,WinAway).
 
-total_win(Team, Result):-
-    num_winner_home(Team,WinHome),
-    num_winner_away(Team,WinAway),
+total_win(Team, Result, Cod, Result2):-
+    num_winner_home(Team,WinHome, Cod, Result2),
+    num_winner_away(Team,WinAway, Cod, Result2),
     Result is WinHome + WinAway.
 
-lose_home(Team,Result):-
-    findall(Team,matchSA(Team,_,"AWAY_TEAM",_,_),Result).
-num_lose_home(Team,LoseHome):-
-    lose_home(Team,Result),
+lose_home(Team,Result, Cod, Result2):-
+    findall(Team,Result2:matchSA(Team,_,"AWAY_TEAM",_,_),Result).
+num_lose_home(Team,LoseHome, Cod, Result2):-
+    lose_home(Team,Result, Cod, Result2),
     length(Result,LoseHome).
 
-lose_away(Team,Result):-
-    findall(Team,matchSA(_,Team,"HOME_TEAM",_,_),Result).
-num_lose_away(Team,LoseAway):-
-    lose_away(Team,Result),
+lose_away(Team,Result, Cod, Result2):-
+    findall(Team,Result2:matchSA(_,Team,"HOME_TEAM",_,_),Result).
+num_lose_away(Team,LoseAway, Cod, Result2):-
+    lose_away(Team,Result, Cod, Result2),
     length(Result,LoseAway).
 
-total_lose(Team, Result):-
-    num_lose_home(Team,LoseHome),
-    num_lose_away(Team,LoseAway),
+total_lose(Team, Result, Cod, Result2):-
+    num_lose_home(Team,LoseHome, Cod, Result2),
+    num_lose_away(Team,LoseAway, Cod, Result2),
     Result is LoseHome + LoseAway.
 
-draw_home(Team,Result):-
-    findall(Team,matchSA(Team,_,"DRAW",_,_),Result).
-num_draw_home(Team,DrawHome):-
-    draw_home(Team,Result),
+draw_home(Team,Result, Cod, Result2):-
+    findall(Team,Result2:matchSA(Team,_,"DRAW",_,_),Result).
+num_draw_home(Team,DrawHome, Cod, Result2):-
+    draw_home(Team,Result, Cod, Result2),
     length(Result,DrawHome).
 
-draw_away(Team,Result):-
-    findall(Team,matchSA(_,Team,"DRAW",_,_),Result).
-num_draw_away(Team,DrawAway):-
-    draw_away(Team,Result),
+draw_away(Team,Result, Cod, Result2):-
+    findall(Team,Result2:matchSA(_,Team,"DRAW",_,_),Result).
+num_draw_away(Team,DrawAway, Cod, Result2):-
+    draw_away(Team,Result, Cod, Result2),
     length(Result,DrawAway).
 
-total_draws(Team, Result):-
-    num_draw_home(Team,DrawHome),
-    num_draw_away(Team,DrawAway),
+total_draws(Team, Result, Cod, Result2):-
+    num_draw_home(Team,DrawHome, Cod, Result2),
+    num_draw_away(Team,DrawAway, Cod, Result2),
     Result is DrawHome + DrawAway.
 
-total_matches_played(Team, Result):-
-    total_win(Team, Result1),
-    total_lose(Team, Result2),
-    total_draws(Team, Result3),
+total_matches_played(Team, Result, Cod, Result4):-
+    total_win(Team, Result1, Cod, Result4),
+    total_lose(Team, Result2, Cod, Result4),
+    total_draws(Team, Result3, Cod, Result4),
     Result is  Result1 + Result2 + Result3.
 
-percent_win(Team, Result):-
-    total_win(Team, Result1),
-    total_matches_played(Team, Result2),
+percent_win(Team, Result, Cod):-
+    start(Team, Cod, Result4),
+    total_win(Team, Result1, Cod, Result4),
+    total_matches_played(Team, Result2, Cod, Result4),
     Result3 is Result1 / Result2,
     Result is Result3 * 100.
 
-percent_lose(Team, Result):-
-    total_lose(Team, Result1),
-    total_matches_played(Team, Result2),
+percent_lose(Team, Result, Cod):-
+    start(Team, Cod, Result4),
+    total_lose(Team, Result1, Cod, Result4),
+    total_matches_played(Team, Result2, Cod, Result4),
     Result3 is Result1 / Result2,
     Result is Result3 * 100.
 
-percent_draws(Team, Result):-
-    total_draws(Team, Result1),
-    total_matches_played(Team, Result2),
+percent_draws(Team, Result, Cod):-
+    start(Team, Cod, Result4),
+    total_draws(Team, Result1, Cod, Result4),
+    total_matches_played(Team, Result2, Cod, Result4),
     Result3 is Result1 / Result2,
     Result is Result3 * 100.
 
@@ -104,23 +108,23 @@ percent_win_home(Team,Result, Cod):-
     consult('BetTacticsScript.pl'),
     start_matches_SA(Team,Cod),
     atom_string(Team, Team1),
-    atom_concat('database_MATCHES-',Team1,Result1),
+    atom_concat('database_',Team1,Result1),
     atom_concat(Result1,'.pl',Result2),
     consult(Result2),
-    num_winner_home(Team,Ris1),
-    tot_played_home(Team,Ris2),
+    use_module(Result2),
+    num_winner_home(Team,Ris1, Cod, Result2),
+    tot_played_home(Team,Ris2, Result2),
     Ris3 is Ris1 / Ris2,
     Result is Ris3 * 100.
 
 
-played_away(Team,Result):-
-
-    findall(Team,matchSA(_,Team,_,_,_),Result).
-not_played_away(Team,Result):-
-    findall(Team,matchSA(_,Team,null,_,_),Result).
-tot_played_away(Team,Play_away):-
-    played_away(Team,Result),
-    not_played_away(Team,Result1),
+played_away(Team, Result, Result2):-
+    findall(Team, Result2:matchSA(_,Team,_,_,_), Result).
+not_played_away(Team,Result, Result2):-
+    findall(Team, Result2:matchSA(_,Team,null,_,_), Result).
+tot_played_away(Team,Play_away, Result2):-
+    played_away(Team,Result, Result2),
+    not_played_away(Team,Result1, Result2),
     length(Result,X),
     length(Result1,Y),
     Play_away is X - Y.
@@ -129,11 +133,11 @@ percent_win_away(Team,Result, Cod):-
     consult('BetTacticsScript.pl'),
     start_matches_SA(Team,Cod),
     atom_string(Team, Team1),
-    atom_concat('database_MATCHES-',Team1,Result1),
+    atom_concat('database_',Team1,Result1),
     atom_concat(Result1,'.pl',Result2),
     consult(Result2),
-    num_winner_away(Team,Ris1),
-    tot_played_away(Team,Ris2),
+    num_winner_away(Team,Ris1, Cod, Result2),
+    tot_played_away(Team,Ris2, Result2),
     Ris3 is Ris1 / Ris2,
     Result is Ris3 * 100.
 
@@ -141,10 +145,11 @@ next_match(X,Y, TeamName, Cod):-
     consult('BetTacticsScript.pl'),
     start_matches_SA(TeamName,Cod),
     atom_string(TeamName, TeamName1),
-    atom_concat('database_MATCHES-',TeamName1,Result1),
+    atom_concat('database_',TeamName1,Result1),
     atom_concat(Result1,'.pl',Result2),
     consult(Result2),
-    findall([Home,Away],matchSA(Home,Away,null,_,_),Result),
+    use_module(Result2),
+    findall([Home,Away],Result2:matchSA(Home,Away,null,_,_),Result),
     member([X,Y],Result),!.
 
 cerca(RisPercentuale,TeamName, Cod, Home, Away):-
@@ -171,7 +176,7 @@ count_occurrences([H|T], String, Count) :-
 
 forma(Team, NumW):-
     consult('BetTacticsScript.pl'),
-    start_results,
+    %start_results,
     consult('database_RESULTS_SA.pl'),
     classifica(_,Team,_,X),
     split_string(X,',',',',Y),
@@ -182,7 +187,7 @@ forma(Team, NumW):-
 total_win_percent(Team, Cod):-
     forma(Team, NumW),
     cerca(RisPercentuale, Team, Cod, Home, Away),
-    percent_win(Team, Result),
+    percent_win(Team, Result, Cod),
     
     ((Team == Home)->percent_win_home(Team, X1, Cod);  percent_win_away(Team, X1, Cod)),
          
@@ -207,8 +212,8 @@ sum_list([H|T], Sum) :-
    ((H == null) -> Sum is 0 + Rest;  Sum is H + Rest).
   
 
-goal_team_home_scored(TeamName, ShortName, Final):-
-    atom_string(ShortName, TeamName1),
+goal_team_home_scored(TeamName, Final):-
+    atom_string(TeamName, TeamName1),
     atom_concat('database_',TeamName1,Result1),
     atom_concat(Result1,'.pl',Result2),
     consult(Result2),
@@ -220,40 +225,43 @@ goal_team_home_scored(TeamName, ShortName, Final):-
 
 goal_team_away_scored(TeamName, Final):-
     atom_string(TeamName, TeamName1),
-    atom_concat('database_MATCHES-',TeamName1,Result1),
+    atom_concat('database_',TeamName1,Result1),
     atom_concat(Result1,'.pl',Result2),
     consult(Result2),
-    findall(Goal, matchSA(_, TeamName, _, _,Goal), Result),
-    tot_played_away(TeamName, PlayedSum),
+    use_module(Result2),
+    findall(Goal, Result2:matchSA(_, TeamName, _, _,Goal), Result),
+    tot_played_away(TeamName, PlayedSum, Result2),
     sum_list(Result, Sum),
     Final is Sum / PlayedSum.
 
 goal_team_home_sub(TeamName, Final):-
     atom_string(TeamName, TeamName1),
-    atom_concat('database_MATCHES-',TeamName1,Result1),
+    atom_concat('database_',TeamName1,Result1),
     atom_concat(Result1,'.pl',Result2),
     consult(Result2),
-    findall(Goal, matchSA(TeamName, _, _, _,Goal), Result),
-    tot_played_home(TeamName, PlayedSum),
+    use_module(Result2),
+    findall(Goal, Result2:matchSA(TeamName, _, _, _,Goal), Result),
+    tot_played_home(TeamName, PlayedSum, Result2),
     sum_list(Result, Sum),
     Final is Sum / PlayedSum.
 
 goal_team_away_sub(TeamName, Final):-
     atom_string(TeamName, TeamName1),
-    atom_concat('database_MATCHES-',TeamName1,Result1),
+    atom_concat('database_',TeamName1,Result1),
     atom_concat(Result1,'.pl',Result2),
     consult(Result2),
-    findall(Goal, matchSA(_, TeamName, _ ,Goal,_), Result),
-    tot_played_away(TeamName, PlayedSum),
+    use_module(Result2),
+    findall(Goal, Result2:matchSA(_, TeamName, _ ,Goal,_), Result),
+    tot_played_away(TeamName, PlayedSum, Result2),
     sum_list(Result, Sum),
     Final is Sum / PlayedSum.
 
 over_under(TeamName, Cod):-
-    next_match(Home10, Away10, TeamName, Cod),
-    goal_team_home_scored(Home10, MediaHomeScored),
-    goal_team_away_scored(Away10, MediaAwayScored),
-    goal_team_home_sub(Home10, MediaHomeSub),
-    goal_team_away_sub(Away10, MediaAwaySub),
+    next_match(Home, Away, TeamName, Cod),
+    goal_team_home_scored(Home, MediaHomeScored),
+    goal_team_away_scored(Away, MediaAwayScored),
+    goal_team_home_sub(Home, MediaHomeSub),
+    goal_team_away_sub(Away, MediaAwaySub),
     HomeGoals is MediaHomeScored + MediaAwaySub,
     MediaHomeGoals is HomeGoals / 2,
     AwayGoals is MediaHomeSub + MediaAwayScored,
@@ -261,21 +269,20 @@ over_under(TeamName, Cod):-
     write('La prossima partita di '),
     write(TeamName),
     write(' : '),
-    write(Home10),
+    write(Home),
     write(' - '),
-    writeln(Away10),
+    writeln(Away),
     OverUnder is MediaHomeGoals + MediaAwayGoals,
     format(atom(OverUnderStamp), "~2f",[OverUnder]),
     write('La media dei goal: '),
-    write(OverUnderStamp),
-    write(' %').
+    write(OverUnderStamp).
     
 
 %odd or even
 sum_list_oddeven([], 0, 0).
 sum_list_oddeven([H|T], Even, Odd) :-
     sum_list_oddeven(T, Even1, Odd1),
-    ((H \== null) -> VAL is H mod 2),
+    ((H \== null) -> VAL is H mod 2 ),
     ((H == null) -> Even is Even1 + 0, Odd is Odd1 + 0;  
     (VAL == 1) -> Odd is Odd1 + 1; 
     Even is Even1 + 1).
@@ -297,57 +304,17 @@ goal_or_not(TeamName, Cod):-
     goal_team_home_scored(Home, MediaHomeScored),
     goal_team_away_scored(Away, MediaAwayScored),
     ((MediaHomeScored >= 1 , MediaAwayScored >= 1) -> 
+        write('La prossima partita di '),
+        write(TeamName),
+        write(' : '),
+        write(Home),
+        write(' - '),
+        writeln(Away),
         write('Entrambe le squadre segneranno un goal');
+        write('La prossima partita di '),
+        write(TeamName),
+        write(' : '),
+        write(Home),
+        write(' - '),
+        writeln(Away),
         write('Una delle due squadre non segnera')).
-
-
-
-
-
-goal_do_home(TeamName,Sum):-
-    atom_string(TeamName, TeamName1),
-    atom_concat('database_MATCHES-',TeamName1,Result1),
-    atom_concat(Result1,'.pl',Result2),
-    consult(Result2),
-    findall(Goal, matchSA(TeamName, _, _, Goal,_), Result),
-    sum_list(Result, Sum).
-
-goal_do_away(TeamName,Sum):-
-    atom_string(TeamName, TeamName1),
-    atom_concat('database_MATCHES-',TeamName1,Result1),
-    atom_concat(Result1,'.pl',Result2),
-    consult(Result2),
-    findall(Goal, matchSA(_, TeamName, _, _ ,Goal), Result),
-    sum_list(Result, Sum).
-
-total_goal_do_team(TeamName,Result):-
-    goal_do_home(TeamName,Sum1),
-    goal_do_away(TeamName,Sum2),
-    Result is Sum1 + Sum2.
-
-goal_sub_home(TeamName,Sum):-
-    atom_string(TeamName, TeamName1),
-    atom_concat('database_MATCHES-',TeamName1,Result1),
-    atom_concat(Result1,'.pl',Result2),
-    consult(Result2),
-    findall(Goal, matchSA(TeamName, _, _, _,Goal), Result),
-    sum_list(Result, Sum).
-
-goal_sub_away(TeamName,Sum):-
-    atom_string(TeamName, TeamName1),
-    atom_concat('database_MATCHES-',TeamName1,Result1),
-    atom_concat(Result1,'.pl',Result2),
-    consult(Result2),
-    findall(Goal, matchSA(_, TeamName, _,Goal,_), Result),
-    sum_list(Result, Sum).
-
-total_goal_sub_team(TeamName, Result):-
-    goal_sub_home(TeamName,Sum1),
-    goal_sub_away(TeamName,Sum2),
-    Result is Sum1 + Sum2.
-
-%differenza goal 
-goal_difference_team(TeamName,Result):-
-    total_goal_do_team(TeamName,Result1),
-    total_goal_sub_team(TeamName, Result2),
-    Result is Result1 - Result2.
