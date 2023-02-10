@@ -5,7 +5,7 @@ function queryRG1() {
     :- multifile(matchSA/5).
 
     matchSA('"US Salernitana 1919"', '"AS Roma"', '"AWAY_TEAM"', 0, 1).
-    matchSA('"AS Roma"', '"US Cremonese"', '"HOME_TEAM"', 1, 0).
+    matchSA("AS Roma", "US Cremonese", "HOME_TEAM", 1, 0).
     matchSA("Juventus FC", "AS Roma", "DRAW", 1, 1).
    
     classifica(1,'"SSC Napoli"', 113, '"W,W,W,W,W"').
@@ -199,7 +199,7 @@ function queryRG1() {
     //session.consult('./js/database_MATCHES-AS Roma.pl');
     console.log(session);
     //var query = `forma('"AS Roma"',  X).`;
-    var query = 'matchSA("AS Roma",Y,Z,W,P).';
+    var query = `matchSA(` + AS + " " + Roma + `,Y,Z,W,P).`;
     session.query(query, {
         success: (goal) => console.log("goal: " + goal),
         error: (err) => console.log("err: " + err),
