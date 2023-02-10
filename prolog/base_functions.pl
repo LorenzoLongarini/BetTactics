@@ -1,9 +1,6 @@
-:- multifile(matchSA/5).
-
 take_scorers(X,Y):-marcatore(X,Y,_,_).
 take_assistmen(X,W):-marcatore(X,_,W,_).
 take_penalties(X,Z):-marcatore(X,_,_,Z).
-
 
 
 winner_home(Team,Result):-
@@ -82,13 +79,13 @@ percent_draws(Team, Result):-
     Result3 is Result1 / Result2,
     Result is Result3 * 100.
 
-played_home(Team,Result):-
-    findall(Team,matchSA(Team,_,_,_,_),Result).
-not_played_home(Team,Result):-
-    findall(Team,matchSA(Team,_,null,_,_),Result).
-tot_played_home(Team,Play_home):-
-    played_home(Team,Result),
-    not_played_home(Team,Result1),
+played_home(Team,Result, Result2):-
+    findall(Team,Result2:matchSA(Team,_,_,_,_),Result).
+not_played_home(Team,Result, Result2):-
+    findall(Team,Result2: matchSA(Team,_,null,_,_),Result).
+tot_played_home(Team,Play_home, Result2):-
+    played_home(Team,Result, Result2),
+    not_played_home(Team,Result1, Result2),
     length(Result,X),
     length(Result1,Y),
     Play_home is X - Y.
@@ -172,7 +169,7 @@ forma(Team, NumW):-
     NumW2 is NumW1 / 5, 
     NumW is NumW2 * 100.
 
-total_win_percent(Team, Cod, Win):-
+total_win_percent(Team, Cod):-
     forma(Team, NumW),
     cerca(RisPercentuale, Team, Cod, Home, Away),
     percent_win(Team, Result),
@@ -180,8 +177,18 @@ total_win_percent(Team, Cod, Win):-
     ((Team == Home)->percent_win_home(Team, X1, Cod);  percent_win_away(Team, X1, Cod)),
          
     Win2 is NumW + RisPercentuale + Result + X1,
-    write(Home), write(' - '),write(Away),
-    Win is Win2 / 4.
+    write('La prossima partita di '),
+    write(Team),
+    write(' : '),
+    write(Home),
+    write(' - '),
+    writeln(Away),
+    Win is Win2 / 4,
+    write(Team),
+    write(' ha una percentuale di vittoria pari al '),
+    format(atom(WinStamp), "~2f",[Win]),
+    write(WinStamp),
+    write(' %').
 
 %over/under
 sum_list([], 0).
@@ -190,13 +197,14 @@ sum_list([H|T], Sum) :-
    ((H == null) -> Sum is 0 + Rest;  Sum is H + Rest).
   
 
-goal_team_home_scored(TeamName, Final):-
-    atom_string(TeamName, TeamName1),
-    atom_concat('database_MATCHES-',TeamName1,Result1),
+goal_team_home_scored(TeamName, ShortName, Final):-
+    atom_string(ShortName, TeamName1),
+    atom_concat('database_',TeamName1,Result1),
     atom_concat(Result1,'.pl',Result2),
     consult(Result2),
-    findall(Goal, matchSA(TeamName, _, _, Goal,_), Result),
-    tot_played_home(TeamName, PlayedSum),
+    use_module(Result2),
+    findall(Goal, Result2:matchSA(TeamName, _, _, Goal,_), Result),
+    tot_played_home(TeamName, PlayedSum, Result2),
     sum_list(Result, Sum),
     Final is Sum / PlayedSum.
 
@@ -230,18 +238,28 @@ goal_team_away_sub(TeamName, Final):-
     sum_list(Result, Sum),
     Final is Sum / PlayedSum.
 
-over_under(TeamName, Cod, OverUnder):-
-    next_match(Home, Away, TeamName, Cod),
-    goal_team_home_scored(Home, MediaHomeScored),
-    goal_team_away_scored(Away, MediaAwayScored),
-    goal_team_home_sub(Home, MediaHomeSub),
-    goal_team_away_sub(Away, MediaAwaySub),
+over_under(TeamName, Cod):-
+    next_match(Home10, Away10, TeamName, Cod),
+    goal_team_home_scored(Home10, MediaHomeScored),
+    goal_team_away_scored(Away10, MediaAwayScored),
+    goal_team_home_sub(Home10, MediaHomeSub),
+    goal_team_away_sub(Away10, MediaAwaySub),
     HomeGoals is MediaHomeScored + MediaAwaySub,
     MediaHomeGoals is HomeGoals / 2,
     AwayGoals is MediaHomeSub + MediaAwayScored,
     MediaAwayGoals is AwayGoals / 2,
-    write(Home),write(' - '),write(Away),
-    OverUnder is MediaHomeGoals + MediaAwayGoals.
+    write('La prossima partita di '),
+    write(TeamName),
+    write(' : '),
+    write(Home10),
+    write(' - '),
+    writeln(Away10),
+    OverUnder is MediaHomeGoals + MediaAwayGoals,
+    format(atom(OverUnderStamp), "~2f",[OverUnder]),
+    write('La media dei goal: '),
+    write(OverUnderStamp),
+    write(' %').
+    
 
 %odd or even
 sum_list_oddeven([], 0, 0).
