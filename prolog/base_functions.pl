@@ -279,22 +279,54 @@ over_under(TeamName, Cod):-
     
 
 %odd or even
+
+pari(0).
+pari(X):- X>0, X1 is X-1, dispari(X1).
+dispari(X):- X>0, X1 is X-1, pari(X1).
+
+
+
 sum_list_oddeven([], 0, 0).
 sum_list_oddeven([H|T], Even, Odd) :-
     sum_list_oddeven(T, Even1, Odd1),
-    ((H \== null) -> VAL is H mod 2 ),
-    ((H == null) -> Even is Even1 + 0, Odd is Odd1 + 0;  
-    (VAL == 1) -> Odd is Odd1 + 1; 
-    Even is Even1 + 1).
+    ((H == 'null') ->  Even = 0, Odd = 0, Even1 = 0, Odd1 = 0;  
+    (dispari(H)) -> Even is Even1 + 1, Odd = Odd1;
+    Odd is Odd1 + 1, Even = Even1). 
 
-goal_home_oddeven(TeamName, Even, Odd):-
-    atom_string(TeamName, TeamName1),
-    atom_concat('database_MATCHES-',TeamName1,Result1),
+goal_home_oddeven(TeamName, Cod):-
+    next_match(Home, Away, TeamName, Cod),
+    atom_string(Home, TeamName1),
+    atom_concat('database_',TeamName1,Result1),
     atom_concat(Result1,'.pl',Result2),
     consult(Result2),
-    findall(Goal, matchSA(TeamName, _, _, Goal,_), Result),
-    %tot_played_home(TeamName, PlayedSum),
-    sum_list_oddeven(Result, Even, Odd).
+    use_module(Result2),
+    atom_string(Away, TeamName2),
+    atom_concat('database_',TeamName2,Result3),
+    atom_concat(Result3,'.pl',Result4),
+    consult(Result4),
+    use_module(Result4),
+    findall(Goal, Result2:matchSA(Home, _, _, Goal,_), GoalHH),
+    findall(Goal, Result2:matchSA(_, Home, _, _,Goal), GoalHA),
+    findall(Goal, Result4:matchSA(Away, _, _, Goal,_), GoalAH),
+    findall(Goal, Result4:matchSA(_, Away, _, _,Goal), GoalAA),
+    sum_list_oddeven(GoalHH, EvenHH, OddHH),
+    sum_list_oddeven(GoalHA, EvenHA, OddHA),
+    sum_list_oddeven(GoalAH, EvenAH, OddAH),
+    sum_list_oddeven(GoalAA, EvenAA, OddAA),
+    EvenH is EvenHH + EvenHA,
+    OddH is OddHH + OddHA,
+    EvenA is EvenAH + EvenAA,
+    OddA is OddAH + OddAA,
+    TotH is EvenH + OddH,
+    PercentEvenH is EvenH / TotH,
+    PercentOddH is OddH / TotH,
+    TotA is EvenA + OddA,
+    PercentEvenA is EvenA / TotA,
+    PercentOddA is OddA / TotA,
+    TotEven is PercentEvenH + PercentEvenA,
+    TotOdd is PercentOddH + PercentOddA,
+    ((TotEven > TotOdd)-> write('La somma totale dei goal e\' PARI');
+     write('La somma totale dei goal e\' DISPARI')).
     %Final is Sum / PlayedSum.
 
 

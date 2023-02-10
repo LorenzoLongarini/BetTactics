@@ -1,4 +1,5 @@
 :- module('database_Udinese.pl', [matchSA/5]).
+:- multifile(matchSA/5).
 matchSA("Milan", "Udinese", "HOME_TEAM", 4, 2).
 matchSA("Udinese", "Salernitana", "DRAW", 0, 0).
 matchSA("Monza", "Udinese", "AWAY_TEAM", 1, 2).

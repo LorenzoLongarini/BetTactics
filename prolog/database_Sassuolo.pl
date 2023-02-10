@@ -1,4 +1,5 @@
 :- module('database_Sassuolo.pl', [matchSA/5]).
+:- multifile(matchSA/5).
 matchSA("Juventus", "Sassuolo", "HOME_TEAM", 3, 0).
 matchSA("Sassuolo", "Lecce", "HOME_TEAM", 1, 0).
 matchSA("Spezia Calcio", "Sassuolo", "DRAW", 2, 2).

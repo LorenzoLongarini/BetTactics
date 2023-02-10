@@ -1,4 +1,5 @@
 :- module('database_Spezia Calcio.pl', [matchSA/5]).
+:- multifile(matchSA/5).
 matchSA("Spezia Calcio", "Empoli", "HOME_TEAM", 1, 0).
 matchSA("Inter", "Spezia Calcio", "HOME_TEAM", 3, 0).
 matchSA("Spezia Calcio", "Sassuolo", "DRAW", 2, 2).
