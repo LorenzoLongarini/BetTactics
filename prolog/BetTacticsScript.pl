@@ -70,24 +70,30 @@ list_json_array_matches_SA(ListMatchesSA,Code):-
 ).
 
 %prende in ingresso la lista generata dalla funzione precedente e scrive all'interno tutte le gare di serie A di quella squadra
-take_matches_SA_list([]).
-take_matches_SA_list([H|T]) :-
+take_matches_SA_list([], _).
+take_matches_SA_list([H|T], Team) :-
+ 
   write('matchSA('),
+  % write(Team),
+  % write('('),
   writeq(H.homeTeam.name),  write(', '),
   writeq(H.awayTeam.name), write(', '),
   writeq(H.score.winner), write(', '),
   writeq(H.score.fullTime.home),write(', '),
   writeq(H.score.fullTime.away),writeln(').'),
-  take_matches_SA_list(T).
+  take_matches_SA_list(T, Team).
 
 %prende in ingresso il nome di una squadra e il codice associato ad essa e crea un nuovo file che verrà popolato
 %grazie alle due funzioni precedenti
 start_matches_SA(Team,Code) :-
- atom_concat('database_MATCHES-',Team,X),
+ atom_concat('database_',Team,X),
  atom_concat(X,'.pl',FileName),
       tell(FileName),
+      write(':- module(\'database_'),
+      write(Team),
+      writeln('.pl\', [matchSA/5]).'),
       list_json_array_matches_SA(ListMatchesSA,Code),
-      take_matches_SA_list(ListMatchesSA.matches),
+      take_matches_SA_list(ListMatchesSA.matches, Team),
       fail.
 start_matches_SA(_,_):-told.
 
