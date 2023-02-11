@@ -371,7 +371,7 @@ over_under(TeamName, Cod):-
 %PARI O DISPARI
 
 %sfrutta le funzioni precedenti per determinare se la somma dei goal di una partita sarà pari oppure dispari
-goal_home_oddeven(TeamName, Cod):-
+goal_odd_even(TeamName, Cod):-
     next_match(Home, Away, TeamName, Cod),
     consult_team(TeamName, Result2),
     consult_team(TeamName, Result4),
