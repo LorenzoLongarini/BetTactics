@@ -108,10 +108,6 @@ points(TeamName):-
     write(' ha: '),
     write(Points),
     write(' punti').
-%trova 
-take_scorers(X,Y):-marcatore(X,Y,_,_).
-take_assistmen(X,W):-marcatore(X,_,W,_).
-take_penalties(X,Z):-marcatore(X,_,_,Z).
 
 %winner_home trova tutte le partite in cui la squadra ha vinto in casa
 winner_home(Team,Result, Result2):-   
