@@ -1,57 +1,5 @@
 :- use_module(library(http/http_open)).
 :- use_module(library(http/json)).
-%restituisce i testa a testa di una gara specifica
-list_json_array_h2h(List_h2h):-
-  setup_call_cleanup(
-    http_open('http://api.football-data.org/v4/matches/418777/head2head?limit=5', In, [request_header('X-Auth-Token'='8ca899dc4862498d90e40bd53563f247'),request_header('Accept'='application/json')]),
-      %prende lo stream che viene salvato in In e lo salva in List
-      json_read_dict(In,List_h2h),
-    close(In)
-).
-
-take_h2h([]).
-take_h2h([H|T]) :-
-  write('partita('),
-  write(H.homeTeam.name), write(', '),
-  write(H.awayTeam.name), write(', '),
-  write(H.score.winner), write(', '),
-  write(H.score.fullTime.home),writeln(').'),
-
-  take_h2h(T).
-
-start_h2h :-
-      tell('database_H2H.pl'),
-      list_json_array_h2h(List_h2h),
-      take_h2h(List_h2h.matches),
-    fail.
-start_h2h:-told.
-
-%restituisce la lista marcatori della serie A
-list_json_array_scorer(ListScorers):-
-  setup_call_cleanup(
-    http_open('http://api.football-data.org/v4/competitions/SA/scorers', In, [request_header('X-Auth-Token'='8ca899dc4862498d90e40bd53563f247'),request_header('Accept'='application/json')]),
-      %prende lo stream che viene salvato in In e lo salva in List
-      json_read_dict(In,ListScorers),
-    close(In)
-).
-
-take_scorers_list([]).
-take_scorers_list([H|T]) :-
-  write('marcatore('),
-  write('"'),
-  write(H.player.name),write('"'),  write(', '),
-  write(H.goals), write(', '),
-  write(H.assists), write(', '),
-  write(H.penalties),writeln(').'),
-
-  take_scorers_list(T).
-
-start_scorer :-
-      tell('database_SCORERS.pl'),
-      list_json_array_scorer(ListScorers),
-     take_scorers_list(ListScorers.scorers),
-    fail.
-start_scorer:-told.
 
 
 %genera un knowledge base con tutte le partite di una determinata squadra
@@ -111,7 +59,7 @@ list_json_array_results(List_res):-
       close(Stream)
   ).
 
-%dato che sono presenti tre table, questa funzione effettua la selezione della prima table
+%dato che sono presenti tre table, questa funzione effettua la selezione solamente della prima
 select_first(X,R):-
   member(X,R),!.
 
@@ -126,7 +74,8 @@ start_results :-
       write(Y.position), write(',"'),
       write(Y.team.shortName),write('", '),
       write(Y.team.id),write(', "'),
-      write(Y.form),writeln('").'),
+      write(Y.form),write('", '),
+      write(Y.points),writeln(').'),
       fail.
 start_results :- told.
 

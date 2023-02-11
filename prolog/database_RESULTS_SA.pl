@@ -1,20 +1,20 @@
-classifica(1,"Napoli", 113, "W,W,W,W,W").
-classifica(2,"Inter", 108, "W,W,L,W,D").
-classifica(3,"Juventus", 109, "W,L,D,L,W").
-classifica(4,"Roma", 100, "W,L,W,W,D").
-classifica(5,"Lazio", 110, "D,D,W,W,D").
-classifica(6,"Atalanta", 102, "L,W,D,W,W").
-classifica(7,"Milan", 98, "L,L,L,D,D").
-classifica(8,"Torino", 586, "W,D,W,L,D").
-classifica(9,"Udinese", 115, "L,D,W,L,L").
-classifica(10,"Bologna", 103, "W,W,D,W,L").
-classifica(11,"Monza", 5911, "D,W,D,W,D").
-classifica(12,"Empoli", 445, "L,D,W,W,D").
-classifica(13,"Fiorentina", 99, "L,D,L,L,W").
-classifica(14,"Lecce", 5890, "W,L,L,D,D").
-classifica(15,"Sassuolo", 471, "W,W,D,L,L").
-classifica(16,"Salernitana", 455, "L,W,L,L,D").
-classifica(17,"Spezia Calcio", 488, "L,L,L,W,D").
-classifica(18,"Verona", 450, "D,D,W,L,W").
-classifica(19,"Sampdoria", 584, "D,L,L,L,L").
-classifica(20,"Cremonese", 457, "L,L,D,L,L").
+classifica(1,"Napoli", 113, "W,W,W,W,W", 56).
+classifica(2,"Inter", 108, "W,W,L,W,D", 43).
+classifica(3,"Juventus", 109, "W,L,D,L,W", 41).
+classifica(4,"Milan", 98, "W,L,L,L,D", 41).
+classifica(5,"Roma", 100, "W,L,W,W,D", 40).
+classifica(6,"Lazio", 110, "D,D,W,W,D", 39).
+classifica(7,"Atalanta", 102, "L,W,D,W,W", 38).
+classifica(8,"Torino", 586, "L,W,D,W,L", 30).
+classifica(9,"Udinese", 115, "L,D,W,L,L", 29).
+classifica(10,"Bologna", 103, "W,W,D,W,L", 29).
+classifica(11,"Empoli", 445, "D,L,D,W,W", 27).
+classifica(12,"Monza", 5911, "D,W,D,W,D", 26).
+classifica(13,"Fiorentina", 99, "L,D,L,L,W", 24).
+classifica(14,"Lecce", 5890, "W,L,L,D,D", 23).
+classifica(15,"Sassuolo", 471, "W,W,D,L,L", 23).
+classifica(16,"Salernitana", 455, "L,W,L,L,D", 21).
+classifica(17,"Spezia Calcio", 488, "D,L,L,L,W", 19).
+classifica(18,"Verona", 450, "D,D,W,L,W", 14).
+classifica(19,"Sampdoria", 584, "D,L,L,L,L", 10).
+classifica(20,"Cremonese", 457, "L,L,D,L,L", 8).
