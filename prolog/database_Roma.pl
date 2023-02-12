@@ -1,7 +1,5 @@
 :- module('database_Roma.pl', [matchSA/5]).
 :- multifile(matchSA/5).
-:- module('database_Roma.pl', [matchSA/5]).
-:- multifile(matchSA/5).
 matchSA("Salernitana", "Roma", "AWAY_TEAM", 0, 1).
 matchSA("Roma", "Cremonese", "HOME_TEAM", 1, 0).
 matchSA("Juventus", "Roma", "DRAW", 1, 1).

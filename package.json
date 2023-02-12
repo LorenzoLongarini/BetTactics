@@ -13,5 +13,8 @@
   "devDependencies": {
     "electron": "^19.0.0",
     "electron-packager": "^17.1.1"
+  },
+  "dependencies": {
+    "tau-prolog": "^0.3.4"
   }
 }
