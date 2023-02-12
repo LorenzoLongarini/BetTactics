@@ -407,26 +407,16 @@ position_difference_percent(RisPercentuale,TeamName, Home, Away):-
 %PERCENTUALE DI VITTORIA
 
 %calcola la percentuale di vittoria di una squadra sfruttando le funzioni precedenti
-total_win_percent(Team, Win2, Home, Away):-
-    %forma(Team, NumW),
+total_win_percent(Team, Win2):-
     position_difference_percent(RisPercentuale, Team, Home, Away),
     percent_win(Team, Result),
-    ((Team == Home)->percent_win_home(Team, X1);
-      percent_win_away(Team, X1)),
-    Win2 is RisPercentuale + Result + X1.
-    %WinStamp is Win2.
-    %write('La prossima partita di '),
-    %write(Team),
-    %write(' : '),
-    %write(Home),
-    %write(' - '),
-    %writeln(Away),
-    %Win is Win2 / 4,
-    %write(Team),
-    %write(' ha una percentuale di vittoria pari al '),
-    %format(atom(WinStamp), "~2f",[Win]),
-    %write(WinStamp),
-    %write(' %').
+    (Team = Home -> percent_win_home(Team, X1);
+    Team = Away ->percent_win_home(Team, X1)),
+    %'=='(Team, Away)->percent_win_away(Team, X1);
+    % X1 = 0)),
+    %Win2 = X1.
+    Win2 = RisPercentuale + Result + X1.
+   
       `
     var selectElement = document.getElementById("mySelect")
     const selectedOption = selectElement.options[selectElement.selectedIndex].label
@@ -434,9 +424,9 @@ total_win_percent(Team, Win2, Home, Away):-
     // var query = session.query('total_matches_played(\'"' + selectedOption + '"\', X).')
     //var query = session.query('total_lose(\'"' + selectedOption + '"\', X).')
     //var query = session.query('tot_played_home(\'"' + selectedOption + '"\', X).')
-    var query = session.query('total_win_percent(\'"' + selectedOption + '"\',X, Y, Z).')
+    var query = session.query('total_win_percent(\'"' + selectedOption + '"\',X).')
+    //var query = session.query('percent_win_away(\'"' + selectedOption + '"\', Y).')
     //var query = session.query('percent_win_home(\'"' + selectedOption + '"\', Y).')
-
     //var query = session.query('position_difference_percent(X,\'"' + selectedOption + '"\', Y, Z).')
     //var query = session.query('percent_win(\'"' + selectedOption + '"\', Y).')
     //var query = session.query('num_winner_home(\'"' + selectedOption + '"\',P).')
@@ -444,7 +434,7 @@ total_win_percent(Team, Win2, Home, Away):-
     //= session.query('fruits_in([apple, pear, banana], X).')
 
     function inform(msg) {
-        show_result1.innerHTML += '<div>' + msg + '</div>'
+        show_result1.innerHTML += '<div> Il risultato è: ' + msg + '</div>'
     }
 
     var count_answers = 0
