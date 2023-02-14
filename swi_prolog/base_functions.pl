@@ -3,6 +3,8 @@
 
 % REGOLE UTILI
 
+%che consente di evitare che vengano generati i warning
+%dovuti all'utilizzo di database differenti che definiscono gli stessi fatti.
 config:-
     set_prolog_flag(warn_override_implicit_import,false).
 
