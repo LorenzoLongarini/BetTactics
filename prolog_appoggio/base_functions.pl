@@ -1,6 +1,6 @@
 %importare multifile ci consente di ridefinire la funzione matchSA presente in tutti i file delle squadre.
 :- multifile(matchSA/5).
-
+:- set_prolog_flag(warn_override_implicit_import,false).
 
 % REGOLE UTILI
 
