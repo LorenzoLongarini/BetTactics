@@ -21,7 +21,7 @@ matchSA("Inter", "Verona", "HOME_TEAM", 1, 0).
 matchSA("Verona", "Lecce", "HOME_TEAM", 2, 0).
 matchSA("Udinese", "Verona", "DRAW", 1, 1).
 matchSA("Verona", "Lazio", "DRAW", 1, 1).
-matchSA("Verona", "Salernitana", "HOME_TEAM", 1, 0).
+matchSA("Verona", "Salernitana", null, null, null).
 matchSA("Roma", "Verona", null, null, null).
 matchSA("Verona", "Fiorentina", null, null, null).
 matchSA("Spezia Calcio", "Verona", null, null, null).

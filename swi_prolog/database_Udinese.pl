@@ -21,7 +21,7 @@ matchSA("Udinese", "Bologna", "AWAY_TEAM", 1, 2).
 matchSA("Sampdoria", "Udinese", "AWAY_TEAM", 0, 1).
 matchSA("Udinese", "Verona", "DRAW", 1, 1).
 matchSA("Torino", "Udinese", "HOME_TEAM", 1, 0).
-matchSA("Udinese", "Sassuolo", null, null, null).
+matchSA("Udinese", "Sassuolo", "DRAW", 2, 2).
 matchSA("Inter", "Udinese", null, null, null).
 matchSA("Udinese", "Spezia Calcio", null, null, null).
 matchSA("Atalanta", "Udinese", null, null, null).

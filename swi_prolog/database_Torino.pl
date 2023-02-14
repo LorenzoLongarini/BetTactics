@@ -21,7 +21,7 @@ matchSA("Torino", "Spezia Calcio", "AWAY_TEAM", 0, 1).
 matchSA("Fiorentina", "Torino", "AWAY_TEAM", 0, 1).
 matchSA("Empoli", "Torino", "DRAW", 2, 2).
 matchSA("Torino", "Udinese", "HOME_TEAM", 1, 0).
-matchSA("Milan", "Torino", null, null, null).
+matchSA("Milan", "Torino", "HOME_TEAM", 1, 0).
 matchSA("Torino", "Cremonese", null, null, null).
 matchSA("Juventus", "Torino", null, null, null).
 matchSA("Torino", "Bologna", null, null, null).

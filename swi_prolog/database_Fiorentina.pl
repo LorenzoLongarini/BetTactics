@@ -21,7 +21,7 @@ matchSA("Roma", "Fiorentina", "HOME_TEAM", 2, 0).
 matchSA("Fiorentina", "Torino", "AWAY_TEAM", 0, 1).
 matchSA("Lazio", "Fiorentina", "DRAW", 1, 1).
 matchSA("Fiorentina", "Bologna", "AWAY_TEAM", 1, 2).
-matchSA("Juventus", "Fiorentina", null, null, null).
+matchSA("Juventus", "Fiorentina", "HOME_TEAM", 1, 0).
 matchSA("Fiorentina", "Empoli", null, null, null).
 matchSA("Verona", "Fiorentina", null, null, null).
 matchSA("Fiorentina", "Milan", null, null, null).

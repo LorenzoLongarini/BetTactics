@@ -21,7 +21,7 @@ matchSA("Sassuolo", "Lazio", "AWAY_TEAM", 0, 2).
 matchSA("Monza", "Sassuolo", "DRAW", 1, 1).
 matchSA("Milan", "Sassuolo", "AWAY_TEAM", 2, 5).
 matchSA("Sassuolo", "Atalanta", "HOME_TEAM", 1, 0).
-matchSA("Udinese", "Sassuolo", null, null, null).
+matchSA("Udinese", "Sassuolo", "DRAW", 2, 2).
 matchSA("Sassuolo", "Napoli", null, null, null).
 matchSA("Lecce", "Sassuolo", null, null, null).
 matchSA("Sassuolo", "Cremonese", null, null, null).
