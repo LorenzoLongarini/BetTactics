@@ -1,13 +1,12 @@
 %importare multifile ci consente di ridefinire la funzione matchSA presente in tutti i file delle squadre.
 :- multifile(matchSA/5).
+%:- set_prolog_flag(warn_override_implicit_import,false).
 
 
 % REGOLE UTILI
 
 %questa funzione richiama start_matches_SA e ci consente di aggiornare il database di una squadra
-start(TeamName, Cod, Result2):-
-    consult('BetTacticsScript.pl'),
-    start_matches_SA(TeamName, Cod),
+start(TeamName, Result2):-
     atom_string(TeamName, TeamName1),
     atom_concat('database_', TeamName1, Result1),
     atom_concat(Result1, '.pl', Result2),
@@ -101,13 +100,9 @@ goal_difference_team(TeamName,Result):-
     Result is Result1 - Result2.
 
 %trova i punti in classifica di una squadra
-points(TeamName):-
+points(TeamName, Points):-
     start_classifica,
-    classifica(_,TeamName,_,_,Points),
-    write(TeamName),
-    write(' ha: '),
-    write(Points),
-    write(' punti').
+    classifica(_,TeamName,_,_,Points).
 
 %winner_home trova tutte le partite in cui la squadra ha vinto in casa
 winner_home(Team,Result, Result2):-   
@@ -128,7 +123,12 @@ num_winner_away(Team,WinAway, Result2):-
     length(Result,WinAway).
 
 %somma tutte le vittorie di una squadra
-total_win(Team, Result, Result2):-
+total_win(Team, Result, TeamName):-
+    atom_string(TeamName, TeamName1),
+    atom_concat('database_', TeamName1, Result1),
+    atom_concat(Result1, '.pl', Result2),
+    consult(Result2),
+    use_module(Result2),
     num_winner_home(Team,WinHome, Result2),
     num_winner_away(Team,WinAway, Result2),
     Result is WinHome + WinAway.
@@ -152,7 +152,12 @@ num_lose_away(Team,LoseAway, Result2):-
     length(Result,LoseAway).
 
 %somma tutte le sconfitte di una squadra
-total_lose(Team, Result,Result2):-
+total_lose(Team, Result,TeamName):-
+    atom_string(TeamName, TeamName1),
+    atom_concat('database_', TeamName1, Result1),
+    atom_concat(Result1, '.pl', Result2),
+    consult(Result2),
+    use_module(Result2),
     num_lose_home(Team,LoseHome, Result2),
     num_lose_away(Team,LoseAway, Result2),
     Result is LoseHome + LoseAway.
@@ -176,7 +181,11 @@ num_draw_away(Team,DrawAway, Result2):-
     length(Result,DrawAway).
 
 %somma tutti i pareggi di una squadra
-total_draws(Team, Result, Result2):-
+total_draws(Team, Result, TeamName):-
+    atom_string(TeamName, TeamName1),
+    atom_concat('database_', TeamName1, Result1),
+    atom_concat(Result1, '.pl', Result2),
+    consult(Result2),
     num_draw_home(Team,DrawHome, Result2),
     num_draw_away(Team,DrawAway, Result2),
     Result is DrawHome + DrawAway.
@@ -189,25 +198,25 @@ total_matches_played(Team, Result, Result4):-
     Result is  Result1 + Result2 + Result3.
 
 %trova la percentuale di vittoria di una squadra
-percent_win(Team, Result, Cod):-
-    start(Team, Cod, Result4),
+percent_win(Team, Result):-
+    start(Team, Result4),
     total_win(Team, Result1, Result4),
     total_matches_played(Team, Result2, Result4),
     Result3 is Result1 / Result2,
     Result is Result3 * 100.
 
 %trova la percentuale di sconfitta di una squadra
-percent_lose(Team, Result, Cod):-
-    start(Team, Cod, Result4),
-    total_lose(Team, Result1, Cod, Result4),
+percent_lose(Team, Result):-
+    start(Team, Result4),
+    total_lose(Team, Result1, Result4),
     total_matches_played(Team, Result2, Result4),
     Result3 is Result1 / Result2,
     Result is Result3 * 100.
 
 %trova la percentuale di pareggio di una squadra
-percent_draws(Team, Result, Cod):-
-    start(Team, Cod, Result4),
-    total_draws(Team, Result1, Cod, Result4),
+percent_draws(Team, Result):-
+    start(Team, Result4),
+    total_draws(Team, Result1, Result4),
     total_matches_played(Team, Result2,Result4),
     Result3 is Result1 / Result2,
     Result is Result3 * 100.
@@ -229,8 +238,8 @@ tot_played_home(Team,Play_home, Result2):-
     Play_home is X - Y.
 
 %trova la percentuale di vittorie sulle partite giocate in casa
-percent_win_home(Team,Result, Cod):-
-    start(Team, Cod, Result2),
+percent_win_home(Team,Result):-
+    start(Team, Result2),
     num_winner_home(Team,Ris1, Result2),
     tot_played_home(Team,Ris2, Result2),
     Ris3 is Ris1 / Ris2,
@@ -253,24 +262,23 @@ tot_played_away(Team,Play_away, Result2):-
     Play_away is X - Y.
 
 %trova la percentuale di vittorie sulle partite giocate fuori casa   
-percent_win_away(Team,Result, Cod):- 
-    start(Team, Cod, Result2),
+percent_win_away(Team,Result):- 
+    start(Team, Result2),
     num_winner_away(Team,Ris1, Result2),
     tot_played_away(Team,Ris2, Result2),
     Ris3 is Ris1 / Ris2,
     Result is Ris3 * 100.
 
 %trova la prossima partita di una squadra
-next_match(X,Y, TeamName, Cod):-
-    start(TeamName, Cod, Result2),
+next_match(X,Y, TeamName):-
+    start(TeamName, Result2),
     findall([Home,Away],Result2:matchSA(Home,Away,null,_,_),Result),
     member([X,Y],Result),!.
 
 %trova la differenza tra due posizioni in classifica e ne trova la percentuale
-position_difference_percent(RisPercentuale,TeamName, Cod, Home, Away):-
-    next_match(Home,Away,TeamName,Cod),
-    start_results,
-    consult('database_RESULTS_SA.pl'),
+position_difference_percent(RisPercentuale,TeamName, Home, Away, Ris):-
+    next_match(Home,Away,TeamName),
+    start_classifica,
     findall(Casa,classifica(Casa,Home,_,_,_),Result),
     findall(Trasferta,classifica(Trasferta,Away,_,_,_),Result2),
     (( Result < Result2 ) -> Ris is Result2-Result;
@@ -280,7 +288,7 @@ position_difference_percent(RisPercentuale,TeamName, Cod, Home, Away):-
      RisPercentuale is 100 - RisPercentuale1).
 
 %calcola la percentuale della forma di una squadra, grazie al numero di "W" delle ultime cinque partite
-forma(Team, NumW):-
+forma(Team, NumW, NumW1):-
     consult('database_RESULTS_SA.pl'),
     classifica(_,Team,_,X,_),
     split_string(X,',',',',Y),
@@ -292,24 +300,15 @@ forma(Team, NumW):-
 %PERCENTUALE DI VITTORIA
 
 %calcola la percentuale di vittoria di una squadra sfruttando le funzioni precedenti
-total_win_percent(Team, Cod):-
+total_win_percent(Team, WinStamp, Home, Away):-
     forma(Team, NumW),
-    position_difference_percent(RisPercentuale, Team, Cod, Home, Away),
-    percent_win(Team, Result, Cod),
-    ((Team == Home)->percent_win_home(Team, X1, Cod);  percent_win_away(Team, X1, Cod)),
-    Win2 is NumW + RisPercentuale + Result + X1,
-    write('La prossima partita di '),
-    write(Team),
-    write(' : '),
-    write(Home),
-    write(' - '),
-    writeln(Away),
+    position_difference_percent(RisPercentuale, Team, Home, Away),
+    percent_win(Team, Result),
+    ((Team == Home)->percent_win_home(Team, X1);  percent_win_away(Team, X1)),
+    Win2 is NumW + RisPercentuale + Result + X1, 
     Win is Win2 / 4,
-    write(Team),
-    write(' ha una percentuale di vittoria pari al '),
-    format(atom(WinStamp), "~2f",[Win]),
-    write(WinStamp),
-    write(' %').
+    format(atom(WinStamp), "~2f",[Win]).
+   
 
 %CALCOLO GOAL
 
@@ -346,8 +345,8 @@ goal_team_away_sub(TeamName, Final):-
     Final is Sum / PlayedSum.
 
 %calcola la media goal di una squadra rispetto al suo avversario
-over_under(TeamName, Cod):-
-    next_match(Home, Away, TeamName, Cod),
+over_under(TeamName, OverUnderStamp, Home, Away):-
+    next_match(Home, Away, TeamName),
     goal_team_home_scored(Home, MediaHomeScored),
     goal_team_away_scored(Away, MediaAwayScored),
     goal_team_home_sub(Home, MediaHomeSub),
@@ -356,23 +355,15 @@ over_under(TeamName, Cod):-
     MediaHomeGoals is HomeGoals / 2,
     AwayGoals is MediaHomeSub + MediaAwayScored,
     MediaAwayGoals is AwayGoals / 2,
-    write('La prossima partita di '),
-    write(TeamName),
-    write(' : '),
-    write(Home),
-    write(' - '),
-    writeln(Away),
     OverUnder is MediaHomeGoals + MediaAwayGoals,
-    format(atom(OverUnderStamp), "~2f",[OverUnder]),
-    write('La media dei goal: '),
-    write(OverUnderStamp).
+    format(atom(OverUnderStamp), "~2f",[OverUnder]).
     
 
 %PARI O DISPARI
 
 %sfrutta le funzioni precedenti per determinare se la somma dei goal di una partita sarà pari oppure dispari
-goal_odd_even(TeamName, Cod):-
-    next_match(Home, Away, TeamName, Cod),
+goal_odd_even(TeamName, Home, Away, TotEven, TotOdd):-
+    next_match(Home, Away, TeamName),
     consult_team(TeamName, Result2),
     consult_team(TeamName, Result4),
     findall(Goal, Result2:matchSA(Home, _, _, Goal,_), GoalHH),
@@ -394,31 +385,16 @@ goal_odd_even(TeamName, Cod):-
     PercentEvenA is EvenA / TotA,
     PercentOddA is OddA / TotA,
     TotEven is PercentEvenH + PercentEvenA,
-    TotOdd is PercentOddH + PercentOddA,
-    ((TotEven > TotOdd)-> write('La somma totale dei goal e\' PARI');
-     write('La somma totale dei goal e\' DISPARI')).
+    TotOdd is PercentOddH + PercentOddA.
 
 
 %DETERMINARE SE ENTRAMBE LE SQUADRE SEGNANO
 
 %preso in ingresso una squadra, determina se nella sua prossima partita segneranno entrambi un goal oppure no
-goal_or_not(TeamName, Cod):-
-    next_match(Home, Away, TeamName, Cod),
+goal_or_not(TeamName, Home, Away, MediaHomeScored, MediaAwayScored):-
+    next_match(Home, Away, TeamName),
     goal_team_home_scored(Home, MediaHomeScored),
-    goal_team_away_scored(Away, MediaAwayScored),
-    ((MediaHomeScored >= 1 , MediaAwayScored >= 1) -> 
-        write('La prossima partita di '),
-        write(TeamName),
-        write(' : '),
-        write(Home),
-        write(' - '),
-        writeln(Away),
-        write('Entrambe le squadre segneranno un goal');
-        write('La prossima partita di '),
-        write(TeamName),
-        write(' : '),
-        write(Home),
-        write(' - '),
-        writeln(Away),
-        write('Una delle due squadre non segnera')).
+    goal_team_away_scored(Away, MediaAwayScored).
+% ((MediaHomeScored >= 1 , MediaAwayScored >= 1) -> ).
+      
 

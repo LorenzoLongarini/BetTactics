@@ -21,7 +21,7 @@ matchSA("Empoli", "Sampdoria", "HOME_TEAM", 1, 0).
 matchSA("Sampdoria", "Udinese", "AWAY_TEAM", 0, 1).
 matchSA("Atalanta", "Sampdoria", "HOME_TEAM", 2, 0).
 matchSA("Monza", "Sampdoria", "DRAW", 2, 2).
-matchSA("Sampdoria", "Inter", null, null, null).
+matchSA("Sampdoria", "Inter", "DRAW", 0, 0).
 matchSA("Sampdoria", "Bologna", null, null, null).
 matchSA("Lazio", "Sampdoria", null, null, null).
 matchSA("Sampdoria", "Salernitana", null, null, null).

@@ -21,7 +21,7 @@ matchSA("Atalanta", "Salernitana", "HOME_TEAM", 8, 2).
 matchSA("Salernitana", "Napoli", "AWAY_TEAM", 0, 2).
 matchSA("Lecce", "Salernitana", "AWAY_TEAM", 1, 2).
 matchSA("Salernitana", "Juventus", "AWAY_TEAM", 0, 3).
-matchSA("Verona", "Salernitana", null, null, null).
+matchSA("Verona", "Salernitana", "HOME_TEAM", 1, 0).
 matchSA("Salernitana", "Lazio", null, null, null).
 matchSA("Salernitana", "Monza", null, null, null).
 matchSA("Sampdoria", "Salernitana", null, null, null).

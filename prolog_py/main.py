@@ -29,16 +29,7 @@ def download_databases():
         res = prolog.query(query)
         list(res)
         print(query)
-        sleep(15)
+        sleep(10)
 
 
 download_databases()
-
-
-prolog.consult("base_functions.pl")
-res = prolog.query('goal_do_home("Verona", X).')
-print(list(res))
-
-label = "Roma"
-res = prolog.query(f'over_under("{label}", 100).')
-print(list(res))

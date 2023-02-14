@@ -4,8 +4,8 @@ classifica(3,"Atalanta", 102, "null", 41).
 classifica(4,"Roma", 100, "null", 41).
 classifica(5,"Milan", 98, "null", 41).
 classifica(6,"Lazio", 110, "null", 39).
-classifica(7,"Udinese", 115, "null", 30).
-classifica(8,"Torino", 586, "null", 30).
+classifica(7,"Torino", 586, "null", 30).
+classifica(8,"Udinese", 115, "null", 30).
 classifica(9,"Juventus", 109, "null", 29).
 classifica(10,"Monza", 5911, "null", 29).
 classifica(11,"Bologna", 103, "null", 29).

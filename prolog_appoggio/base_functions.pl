@@ -1,8 +1,10 @@
 %importare multifile ci consente di ridefinire la funzione matchSA presente in tutti i file delle squadre.
 :- multifile(matchSA/5).
-:- set_prolog_flag(warn_override_implicit_import,false).
 
 % REGOLE UTILI
+
+config:-
+    set_prolog_flag(warn_override_implicit_import,false).
 
 %questa funzione richiama start_matches_SA e ci consente di aggiornare il database di una squadra
 start(TeamName, Cod, Result2):-
@@ -269,8 +271,7 @@ next_match(X,Y, TeamName, Cod):-
 %trova la differenza tra due posizioni in classifica e ne trova la percentuale
 position_difference_percent(RisPercentuale,TeamName, Cod, Home, Away):-
     next_match(Home,Away,TeamName,Cod),
-    start_results,
-    consult('database_RESULTS_SA.pl'),
+    start_classifica,
     findall(Casa,classifica(Casa,Home,_,_,_),Result),
     findall(Trasferta,classifica(Trasferta,Away,_,_,_),Result2),
     (( Result < Result2 ) -> Ris is Result2-Result;

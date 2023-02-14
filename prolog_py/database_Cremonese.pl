@@ -21,7 +21,7 @@ matchSA("Cremonese", "Monza", "AWAY_TEAM", 2, 3).
 matchSA("Bologna", "Cremonese", "DRAW", 1, 1).
 matchSA("Cremonese", "Inter", "AWAY_TEAM", 1, 2).
 matchSA("Cremonese", "Lecce", "AWAY_TEAM", 0, 2).
-matchSA("Napoli", "Cremonese", null, null, null).
+matchSA("Napoli", "Cremonese", "HOME_TEAM", 3, 0).
 matchSA("Torino", "Cremonese", null, null, null).
 matchSA("Cremonese", "Roma", null, null, null).
 matchSA("Sassuolo", "Cremonese", null, null, null).
