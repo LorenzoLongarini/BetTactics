@@ -10,7 +10,7 @@ prolog.consult("base_functions.pl")
 
 window = tk.Tk()
 window.title('BetTactics')
-window.geometry('700x500')
+window.geometry('650x500')
 
 dbs_info = {}
 result_label = ttk.Label()
@@ -183,7 +183,7 @@ class MyCombobox(ttk.Combobox):
                     window, text="La prossima partita di "
                     + key + " è: " + str(XObject) + " - " + str(YObject)
                     + "\nEntrambe le squadre segneranno almeno un goal")
-                result_label.grid(column=1, row=6, columnspan=3)
+                result_label.grid(column=0, row=6, columnspan=3)
                 window.after(5000, lambda: result_label.destroy())
             else:
                 result_label = ttk.Label(
