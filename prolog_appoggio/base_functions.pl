@@ -282,7 +282,7 @@ position_difference_percent(RisPercentuale,TeamName, Cod, Home, Away):-
 
 %calcola la percentuale della forma di una squadra, grazie al numero di "W" delle ultime cinque partite
 forma(Team, NumW):-
-    consult('database_RESULTS_SA.pl'),
+    start_classifica
     classifica(_,Team,_,X,_),
     split_string(X,',',',',Y),
     count_occurrences(Y,"W",NumW1),

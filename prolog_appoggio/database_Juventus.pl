@@ -21,7 +21,7 @@ matchSA("Napoli", "Juventus", "HOME_TEAM", 5, 1).
 matchSA("Juventus", "Atalanta", "DRAW", 3, 3).
 matchSA("Juventus", "Monza", "AWAY_TEAM", 0, 2).
 matchSA("Salernitana", "Juventus", "AWAY_TEAM", 0, 3).
-matchSA("Juventus", "Fiorentina", null, null, null).
+matchSA("Juventus", "Fiorentina", "HOME_TEAM", 1, 0).
 matchSA("Spezia Calcio", "Juventus", null, null, null).
 matchSA("Juventus", "Torino", null, null, null).
 matchSA("Roma", "Juventus", null, null, null).

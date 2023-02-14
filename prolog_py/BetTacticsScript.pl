@@ -52,7 +52,7 @@ start_matches_SA(_,_):-told.
 %genera uno Stream che viene trasformato in un dict che viene restituito dalla funzione
 list_json_array_results(List_res):-
   setup_call_cleanup(
-      http_open('http://api.football-data.org/v4/competitions/SA/standings',
+      http_open('http://api.football-data.org/v4/competitions/SA/standings?season=2022',
       Stream,
       [request_header('X-Auth-Token'='8ca899dc4862498d90e40bd53563f247'),request_header('Accept'='application/json')]),
       json_read_dict(Stream,List_res),

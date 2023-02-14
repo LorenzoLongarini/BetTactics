@@ -9,10 +9,11 @@ prolog = Prolog()
 prolog.consult("base_functions.pl")
 
 window = tk.Tk()
-window.title('La nostra UI')
-window.geometry('600x300')
+window.title('BetTactics')
+window.geometry('700x500')
 
-# dbs_info = {}
+dbs_info = {}
+result_label = ttk.Label()
 
 
 class MyCombobox(ttk.Combobox):
@@ -20,12 +21,12 @@ class MyCombobox(ttk.Combobox):
     # lista contenente tuple con id, nome squadra
     file = codecs.open("database_RESULTS_SA.pl", 'r', encoding='UTF-8')
     # estrazione id e nome da file database_RESULTS_SA
-    # for s in file.read().split("\n"):
-    #     if "classifica" in s:
-    #         s = s[s.index("(")+1:s.index(")")+1].split(",")
-    #         id = s[2].lstrip()
-    #         name = s[1].lstrip().replace("\"", "")
-    #         dbs_info[name] = id  # .append((id, name))
+    for s in file.read().split("\n"):
+        if "classifica" in s:
+            s = s[s.index("(")+1:s.index(")")+1].split(",")
+            id = s[2].lstrip()
+            name = s[1].lstrip().replace("\"", "")
+            dbs_info[name] = id  # .append((id, name))
 
     def total_win(self, event):
         key = self.get_key()
@@ -35,7 +36,8 @@ class MyCombobox(ttk.Combobox):
             result_label = ttk.Label(
                 window, text="Il numero di vittorie di " +
                 key + " è: " + str(res["X"]))
-            result_label.grid(column=1, row=6)
+            result_label.grid(column=0, row=6, columnspan=3)
+            window.after(5000, lambda: result_label.destroy())
 
     def total_lose(self, event):
         key = self.get_key()
@@ -45,7 +47,8 @@ class MyCombobox(ttk.Combobox):
             result_label = ttk.Label(
                 window, text="Il numero di sconfitte di " +
                 key + " è: " + str(res["X"]))
-            result_label.grid(column=1, row=6)
+            result_label.grid(column=0, row=6, columnspan=3)
+            window.after(5000, lambda: result_label.destroy())
 
     def total_draws(self, event):
         key = self.get_key()
@@ -55,7 +58,8 @@ class MyCombobox(ttk.Combobox):
             result_label = ttk.Label(
                 window, text="Il numero di pareggi di " +
                 key + " è: " + str(res["X"]))
-            result_label.grid(column=1, row=6)
+            result_label.grid(column=0, row=6, columnspan=3)
+            window.after(5000, lambda: result_label.destroy())
 
     def total_goal_do_team(self, event):
         key = self.get_key()
@@ -65,7 +69,8 @@ class MyCombobox(ttk.Combobox):
             result_label = ttk.Label(
                 window, text="Il numero di goal fatti da " +
                 key + " è: " + str(res["X"]))
-            result_label.grid(column=1, row=6)
+            result_label.grid(column=0, row=6, columnspan=3)
+            window.after(5000, lambda: result_label.destroy())
 
     def total_goal_sub_team(self, event):
         key = self.get_key()
@@ -75,7 +80,8 @@ class MyCombobox(ttk.Combobox):
             result_label = ttk.Label(
                 window, text="Il numero di goal subiti da " +
                 key + " è: " + str(res["X"]))
-            result_label.grid(column=1, row=6)
+            result_label.grid(column=0, row=6, columnspan=3)
+            window.after(5000, lambda: result_label.destroy())
 
     def points(self, event):
         key = self.get_key()
@@ -85,7 +91,8 @@ class MyCombobox(ttk.Combobox):
             result_label = ttk.Label(
                 window, text="Il numero di punti fatti da " +
                 key + " è: " + str(res["X"]))
-            result_label.grid(column=1, row=6)
+            result_label.grid(column=0, row=6, columnspan=3)
+            window.after(5000, lambda: result_label.destroy())
 
     def goal_difference_team(self, event):
         key = self.get_key()
@@ -95,7 +102,8 @@ class MyCombobox(ttk.Combobox):
             result_label = ttk.Label(
                 window, text="La differenza reti di " +
                 key + " è: " + str(res["X"]))
-            result_label.grid(column=1, row=6)
+            result_label.grid(column=0, row=6, columnspan=3)
+            window.after(5000, lambda: result_label.destroy())
 
     def next_match(self, event):
         key = self.get_key()
@@ -106,7 +114,8 @@ class MyCombobox(ttk.Combobox):
                 window, text="La prossima partita di " +
                 key + " è: " + str(res["X"].decode(encoding="UTF-8")) + " - "
                 + str(res["Y"].decode(encoding="UTF-8")))
-            result_label.grid(column=1, row=6)
+            result_label.grid(column=0, row=6, columnspan=3)
+            window.after(5000, lambda: result_label.destroy())
 
     def position_difference_percent(self, event):
         key = self.get_key()
@@ -118,18 +127,20 @@ class MyCombobox(ttk.Combobox):
                 key + " è: " + str(res["W"].decode(encoding="UTF-8")) + " - "
                 + str(res["Y"].decode(encoding="UTF-8")) + "\n la differenza tra le posizioni in classifica è: " +
                 str(res["Z"]))
-            result_label.grid(column=1, row=6)
+            result_label.grid(column=0, row=6, columnspan=3)
+            window.after(5000, lambda: result_label.destroy())
 
     def forma(self, event):
         key = self.get_key()
-        query = f'forma("{key}", Y, Z).'
+        query = f'forma("{key}",X, Z).'
         results = list(prolog.query(query))
         for res in results:
             result_label = ttk.Label(
                 window, text="La forma di " +
-                key + " è: " + str(res["Z"]) +
+                key + " è: " + str(res["X"]) + " %"
                 "\n" + key + " ha vinto " + str(res["Z"]) + " delle ultime 5 partite")
-            result_label.grid(column=1, row=6)
+            result_label.grid(column=0, row=6, columnspan=3)
+            window.after(5000, lambda: result_label.destroy())
 
     def over_under(self, event):
         key = self.get_key()
@@ -143,38 +154,44 @@ class MyCombobox(ttk.Combobox):
                 window, text="La prossima partita di " +
                 key + " è: " + str(YObject) + " - "
                 + str(ZObject) + "\nLa media dei goal è: " + str(XObject))
-            result_label.grid(column=1, row=6)
+            result_label.grid(column=0, row=6, columnspan=3)
+            window.after(5000, lambda: result_label.destroy())
 
     def total_win_percent(self, event):
         key = self.get_key()
-        value = self.get_value()
-        query = 'total_win_percent("{}", X, Y, Z).'.format(key)
+        query = f'total_win_percent("{key}", X, Y, Z, \'{key}\').'
         results = list(prolog.query(query))
         for res in results:
+            YObject = res["Y"].decode(encoding="UTF-8")
+            ZObject = res["Z"].decode(encoding="UTF-8")
             result_label = ttk.Label(
                 window, text="La prossima partita di "
-                + key + " è: " + str(res["Y"]) + " - " + str(res["Z"])
+                + key + " è: " + str(YObject) + " - " + str(ZObject)
                 + "\nLa percentuale di vittoria di " + key + " è: " + str(res["X"]) + " %")
-            result_label.grid(column=1, row=6)
+            result_label.grid(column=0, row=6, columnspan=3)
+            window.after(5000, lambda: result_label.destroy())
 
     def goal_or_not(self, event):
         key = self.get_key()
-        value = self.get_value()
         query = 'goal_or_not("{}", X, Y, W, Z).'.format(key)
         results = list(prolog.query(query))
         for res in results:
+            XObject = res["X"].decode(encoding="UTF-8")
+            YObject = res["Y"].decode(encoding="UTF-8")
             if res["W"] > res["Z"]:
                 result_label = ttk.Label(
                     window, text="La prossima partita di "
-                    + key + " è: " + str(res["X"]) + " - " + str(res["Y"])
+                    + key + " è: " + str(XObject) + " - " + str(YObject)
                     + "\nEntrambe le squadre segneranno almeno un goal")
-                result_label.grid(column=1, row=6)
+                result_label.grid(column=1, row=6, columnspan=3)
+                window.after(5000, lambda: result_label.destroy())
             else:
                 result_label = ttk.Label(
                     window, text="La prossima partita di "
-                    + key + " è: " + str(res["X"]) + " - " + str(res["Y"])
+                    + key + " è: " + str(XObject) + " - " + str(YObject)
                     + "\nUna delle due squadre non segnerà")
-                result_label.grid(column=1, row=6)
+                result_label.grid(column=0, row=6, columnspan=3)
+                window.after(5000, lambda: result_label.destroy())
         # sleep(20)
 
     def goal_odd_even(self, event):
@@ -183,18 +200,22 @@ class MyCombobox(ttk.Combobox):
         query = 'goal_odd_even("{}", X, Y, W, Z).'.format(key)
         results = list(prolog.query(query))
         for res in results:
+            XObject = res["X"].decode(encoding="UTF-8")
+            YObject = res["Y"].decode(encoding="UTF-8")
             if res["W"] > res["Z"]:
                 result_label = ttk.Label(
                     window, text="La prossima partita di "
-                    + key + " è: " + str(res["X"]) + " - " + str(res["Y"])
+                    + key + " è: " + str(XObject) + " - " + str(YObject)
                     + "\nLa somma totale dei goal è PARI")
-                result_label.grid(column=1, row=6)
+                result_label.grid(column=0, row=6, columnspan=3)
+                window.after(5000, lambda: result_label.destroy())
             else:
                 result_label = ttk.Label(
                     window, text="La prossima partita di "
-                    + key + " è: " + str(res["X"]) + " - " + str(res["Y"])
+                    + key + " è: " + str(XObject) + " - " + str(YObject)
                     + "\nLa somma totale dei goal è DISPARI")
-                result_label.grid(column=1, row=6)
+                result_label.grid(column=0, row=6, columnspan=3)
+                window.after(5000, lambda: result_label.destroy())
 
     def __init__(self, master=None, cnf={}, **options):
 
@@ -229,21 +250,16 @@ class MyCombobox(ttk.Combobox):
         return self.get()
 
 
-# tk.Label(window, text="List").pack()
-
-# # combobox working in old way with list
-# cb = MyCombobox(window, state='readonly', values=list(items))
-# cb.pack()
-# cb.set('Seleziona squadra')
-
 function_selector = ttk.Combobox(
     window, values=['over_under', 'total_win_percent', 'goal_or_not', 'goal_odd_even',
                     'total_win', 'total_draws', 'total_lose', 'total_goal_do_team', 'total_goal_sub_team',
                     'points', 'goal_difference_team', 'next_match', 'position_difference_percent', 'forma'])
-function_selector.grid(column=0, row=1)
 
-launch_button = tk.Button(window, text='Launch Function')
-launch_button.grid(column=0, row=2)
+function_selector.grid(column=1, row=1, ipadx=25, padx=50)
+function_selector.set('Seleziona risultato')
+
+launch_button = tk.Button(window, text='Genera Risultato')
+launch_button.grid(column=0, row=3, columnspan=3, pady=20)
 
 
 def launch_function(event):
@@ -263,14 +279,16 @@ dbs = {'Napoli': '113', 'Inter': '108', 'Atalanta': '102', 'Roma': '100', 'Milan
 # bind the launch button to the launch_function
 launch_button.bind('<Button-1>', launch_function)
 
-tk.Label(window, text="BetTactics").grid(column=0, row=5)
+logo = tk.PhotoImage(file='logo.png')
+labelLogo = tk.Label(window, image=logo)
+
+labelLogo.grid(column=0, columnspan=4, row=0, padx=20)
 
 # combobox working in new way with dictionary
 cb = MyCombobox(window, state='readonly', values=dbs)
-cb.grid(column=0, row=0)
+cb.grid(column=0, row=1, ipadx=10, padx=50)
 cb.set('Seleziona squadra')
 # cb.bind('<<ComboboxSelected>>', cb.goal_odd_even)
 
-print(dbs)
 
 window.mainloop()

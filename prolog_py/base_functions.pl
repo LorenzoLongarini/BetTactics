@@ -113,7 +113,7 @@ num_winner_home(Team,WinHome, Result2):-
     winner_home(Team,Result, Result2),
     length(Result,WinHome).
 
-%winner_home trova tutte le partite in cui la squadra ha vinto fuori casa
+%winner_home trova tutte le partite in cui la squadra ha vinto fuorinum_winner_home casa
 winner_away(Team,Result,  Result2):-
     findall(Team,Result2:matchSA(_,Team,"AWAY_TEAM",_,_),Result).
 
@@ -198,24 +198,25 @@ total_matches_played(Team, Result, Result4):-
     Result is  Result1 + Result2 + Result3.
 
 %trova la percentuale di vittoria di una squadra
-percent_win(Team, Result):-
-    start(Team, Result4),
+percent_win(Team, Result, Result4):-
+    %start(Team, Result4),
+    
     total_win(Team, Result1, Result4),
     total_matches_played(Team, Result2, Result4),
     Result3 is Result1 / Result2,
     Result is Result3 * 100.
 
 %trova la percentuale di sconfitta di una squadra
-percent_lose(Team, Result):-
-    start(Team, Result4),
+percent_lose(Team, Result, Result4):-
+    %start(Team, Result4),
     total_lose(Team, Result1, Result4),
     total_matches_played(Team, Result2, Result4),
     Result3 is Result1 / Result2,
     Result is Result3 * 100.
 
 %trova la percentuale di pareggio di una squadra
-percent_draws(Team, Result):-
-    start(Team, Result4),
+percent_draws(Team, Result, Result4):-
+    %start(Team, Result4),
     total_draws(Team, Result1, Result4),
     total_matches_played(Team, Result2,Result4),
     Result3 is Result1 / Result2,
@@ -238,8 +239,11 @@ tot_played_home(Team,Play_home, Result2):-
     Play_home is X - Y.
 
 %trova la percentuale di vittorie sulle partite giocate in casa
-percent_win_home(Team,Result):-
-    start(Team, Result2),
+percent_win_home(Team,Result, TeamName):-
+    atom_string(TeamName, TeamName1),
+    atom_concat('database_', TeamName1, Result1),
+    atom_concat(Result1, '.pl', Result2),
+    consult(Result2),
     num_winner_home(Team,Ris1, Result2),
     tot_played_home(Team,Ris2, Result2),
     Ris3 is Ris1 / Ris2,
@@ -262,10 +266,14 @@ tot_played_away(Team,Play_away, Result2):-
     Play_away is X - Y.
 
 %trova la percentuale di vittorie sulle partite giocate fuori casa   
-percent_win_away(Team,Result):- 
-    start(Team, Result2),
-    num_winner_away(Team,Ris1, Result2),
-    tot_played_away(Team,Ris2, Result2),
+percent_win_away(Team,Result, TeamName):- 
+    % start(Team, Result2),
+    atom_string(TeamName, TeamName1),
+    atom_concat('database_', TeamName1, Result1),
+    atom_concat(Result1, '.pl', Result2),
+    consult(Result2),
+    num_winner_away(Team, Ris1, Result2),
+    tot_played_away(Team, Ris2, Result2),
     Ris3 is Ris1 / Ris2,
     Result is Ris3 * 100.
 
@@ -300,11 +308,11 @@ forma(Team, NumW, NumW1):-
 %PERCENTUALE DI VITTORIA
 
 %calcola la percentuale di vittoria di una squadra sfruttando le funzioni precedenti
-total_win_percent(Team, WinStamp, Home, Away):-
-    forma(Team, NumW),
-    position_difference_percent(RisPercentuale, Team, Home, Away),
-    percent_win(Team, Result),
-    ((Team == Home)->percent_win_home(Team, X1);  percent_win_away(Team, X1)),
+total_win_percent(Team, WinStamp, Home, Away, TeamName2):-
+    forma(Team, NumW, NumW1),
+    position_difference_percent(RisPercentuale, Team, Home, Away, Ris),
+    percent_win(Team, Result, TeamName2),
+    ((Team == Home)->percent_win_home(Team, X1, TeamName2);  percent_win_away(Team, X1, TeamName2)),
     Win2 is NumW + RisPercentuale + Result + X1, 
     Win is Win2 / 4,
     format(atom(WinStamp), "~2f",[Win]).
