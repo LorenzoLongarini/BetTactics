@@ -114,12 +114,12 @@ python gui.py
 ```
 it will open a window where you can select match and function. An example:
 <p align="center">
-<img src="https://github.com/LorenzoLongarini/BetTactics/blob/main/prolog_py/logo.png">
+<img src="https://github.com/LorenzoLongarini/BetTactics/blob/main/screenshot/python1.png">
 </p>
 
 you can run a rule click on the button:
 <p align="center">
-<img src="https://github.com/LorenzoLongarini/BetTactics/blob/main/prolog_py/logo.png">
+<img src="https://github.com/LorenzoLongarini/BetTactics/blob/main/screenshot/python_over_under.png">
 </p>
 
 ## How it works
