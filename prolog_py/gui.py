@@ -61,7 +61,7 @@ class MyCombobox(ttk.Combobox):
             result_label.grid(column=0, row=6, columnspan=3)
             window.after(5000, lambda: result_label.destroy())
 
-    def total_goal_do_team(self, event):
+    def total_goals_done(self, event):
         key = self.get_key()
         query = f'total_goal_do_team("{key}",X).'
         results = list(prolog.query(query))
@@ -72,7 +72,7 @@ class MyCombobox(ttk.Combobox):
             result_label.grid(column=0, row=6, columnspan=3)
             window.after(5000, lambda: result_label.destroy())
 
-    def total_goal_sub_team(self, event):
+    def total_goals_conceded(self, event):
         key = self.get_key()
         query = f'total_goal_sub_team("{key}",X).'
         results = list(prolog.query(query))
@@ -171,7 +171,7 @@ class MyCombobox(ttk.Combobox):
             result_label.grid(column=0, row=6, columnspan=3)
             window.after(5000, lambda: result_label.destroy())
 
-    def goal_or_not(self, event):
+    def goal_nogoal(self, event):
         key = self.get_key()
         query = 'goal_or_not("{}", X, Y, W, Z).'.format(key)
         results = list(prolog.query(query))
@@ -251,8 +251,8 @@ class MyCombobox(ttk.Combobox):
 
 
 function_selector = ttk.Combobox(
-    window, values=['over_under', 'total_win_percent', 'goal_or_not', 'goal_odd_even',
-                    'total_win', 'total_draws', 'total_lose', 'total_goal_do_team', 'total_goal_sub_team',
+    window, values=['over_under', 'total_win_percent', 'goal_nogoal', 'goal_odd_even',
+                    'total_win', 'total_draws', 'total_lose', 'total_goals_done', 'total_goals_conceded',
                     'points', 'goal_difference_team', 'next_match', 'position_difference_percent', 'forma'])
 
 function_selector.grid(column=1, row=1, ipadx=25, padx=50)
