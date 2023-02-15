@@ -67,10 +67,23 @@ sequenceDiagram
 	football-data-->>SWI-Prolog: data in stream
 	SWI-Prolog->>User: create knowledge-base
 ```
+
+```mermaid
+sequenceDiagram
+	
+
+	User->> SWI-Prolog: start_results()
+	SWI-Prolog-->>football-data: http_open()
+	football-data-->> DB: GET data
+	DB-->> football-data: return data
+	football-data-->>SWI-Prolog: data in stream
+	SWI-Prolog->>User: create knowledge-base
+```
 ## Sitography
-- Tau : http://tau-prolog.org/manual/a-simple-tutorial
-- Electron: https://www.electronjs.org/docs/latest/
 - Swi Prolog: https://www.swi-prolog.org/
+- Python: https://www.python.org/
+- Ttk-inter: https://docs.python.org/3/library/tkinter.ttk.html#using-ttk
+- Tk-inter: https://docs.python.org/3/library/tkinter.html
 - Mermaid: https://mermaid-js.github.io/mermaid/#/
 
 ## Authors
