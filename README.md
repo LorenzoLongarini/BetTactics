@@ -42,8 +42,85 @@ Now you can use gui running:
 python gui.py
 ```
 ## How to use
+If you want to use BetTactics in SWI-Prolog, first you have to create all the databases through:
+```
+start_matches_SA("YOUR_TEAM","YOUR_TEAM_CODE").
+```
+then, you have to create Serie A's standings through:
+```
+start_results.
+```
+Now, you can predict this four results, using the following function:
 
-then you can start the application with the follow command in command prompt:
+- to predict total win percent:
+	```
+	total_win_percent("TEAM", TEAM_CODE).
+	```
+	for example:
+	```
+	total_win_percent("Atalanta", 102).
+	```
+	will return:
+	```
+	La prossima partita di Atalanta : Atalanta - Lecce
+	Atalanta ha una percentuale di vittoria pari al 52.39 %
+	```
+- to predict matchs's average score:
+	```
+	over_under("TEAM", TEAM_CODE).
+	```
+	for example:
+	```
+	over_under("Atalanta", 102).
+	```
+	will return:
+	```
+	La prossima partita di Atalanta : Atalanta - Lecce
+	La media dei goal: 2.61
+	```
+
+- to predict if both team will score:
+	```
+	goal_or_not("TEAM", TEAM_CODE).
+	```
+	for example:
+	```
+	goal_or_not("Atalanta", 102).
+	```
+	will return:
+	```
+	La prossima partita di Atalanta : Atalanta - Lecce
+	Una delle due squadre non segnerà
+	```
+
+- to predict if goal's sum is odd or even:
+	```
+	goal_odd_even("TEAM", TEAM_CODE).
+	```
+	for example:
+	```
+	goal_odd_even("Atalanta", 102).
+	```
+	will return:
+	```
+	La prossima partita di Atalanta : Atalanta - Lecce
+	La somma totale dei goal e' DISPARI
+	```
+If you want to run other statistics rules, you can consult base_function.pl.
+
+If you prefer to run BetTactics with python, you have tu run: 
+```
+python gui.py
+```
+it will open a window where you can select match and function. An example:
+<p align="center">
+<img src="https://github.com/LorenzoLongarini/BetTactics/blob/main/prolog_py/logo.png">
+</p>
+
+you can run a rule click on the button:
+<p align="center">
+<img src="https://github.com/LorenzoLongarini/BetTactics/blob/main/prolog_py/logo.png">
+</p>
 
 ## How it works
 To download all matches of a particular team you should run: 

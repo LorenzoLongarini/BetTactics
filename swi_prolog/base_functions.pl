@@ -399,7 +399,14 @@ goal_odd_even(TeamName, Cod):-
     PercentOddA is OddA / TotA,
     TotEven is PercentEvenH + PercentEvenA,
     TotOdd is PercentOddH + PercentOddA,
-    ((TotEven > TotOdd)-> write('La somma totale dei goal e\' PARI');
+    write('La prossima partita di '),
+        write(TeamName),
+        write(' : '),
+        write(Home),
+        write(' - '),
+        writeln(Away),
+    ((TotEven > TotOdd)-> 
+    write('La somma totale dei goal e\' PARI');
      write('La somma totale dei goal e\' DISPARI')).
 
 
