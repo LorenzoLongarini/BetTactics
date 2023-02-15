@@ -12,21 +12,13 @@ window = tk.Tk()
 window.title('BetTactics')
 window.geometry('650x500')
 
-dbs_info = {}
 result_label = ttk.Label()
 
 
 class MyCombobox(ttk.Combobox):
 
-    # lista contenente tuple con id, nome squadra
-    file = codecs.open("database_RESULTS_SA.pl", 'r', encoding='UTF-8')
-    # estrazione id e nome da file database_RESULTS_SA
-    for s in file.read().split("\n"):
-        if "classifica" in s:
-            s = s[s.index("(")+1:s.index(")")+1].split(",")
-            id = s[2].lstrip()
-            name = s[1].lstrip().replace("\"", "")
-            dbs_info[name] = id  # .append((id, name))
+    # le seguenti funzioni sfruttano la dipendenza di Prolog per effettuare
+    # delle query che sono presenti nel file base_functions
 
     def total_win(self, event):
         key = self.get_key()
@@ -192,7 +184,6 @@ class MyCombobox(ttk.Combobox):
                     + "\nUna delle due squadre non segnerà")
                 result_label.grid(column=0, row=6, columnspan=3)
                 window.after(5000, lambda: result_label.destroy())
-        # sleep(20)
 
     def goal_odd_even(self, event):
         key = self.get_key()
@@ -221,22 +212,22 @@ class MyCombobox(ttk.Combobox):
 
         self.dict = None
 
-        # get dictionary from options and put list of keys
+        # prende il dictionary dalle options e fa una lista di key
         if 'values' in options:
             if isinstance(options.get('values'), dict):
                 self.dict = options.get('values')
                 options['values'] = sorted(self.dict.keys())
 
-        # combobox constructor with list of keys
+        # costruttore
         ttk.Combobox.__init__(self, **options)
 
-        # assign some function
+        # assegna le funzioni
         self.bind('<<ComboboxSelected>>', self.on_select)
 
     def on_select(self, event):
         print(self.get(), self.get_key(), self.get_value())
 
-    # overwrite `get()` to return `value` instead of `key`
+    # sovrascrive `get()` per permetterci di ritornare `value` invece di `key`
     def get(self):
         if self.dict:
             return self.dict[ttk.Combobox.get(self)]
@@ -250,45 +241,45 @@ class MyCombobox(ttk.Combobox):
         return self.get()
 
 
+# select relativo alle funzioni
 function_selector = ttk.Combobox(
     window, values=['over_under', 'total_win_percent', 'goal_nogoal', 'goal_odd_even',
                     'total_win', 'total_draws', 'total_lose', 'total_goals_done', 'total_goals_conceded',
                     'points', 'goal_difference_team', 'next_match', 'position_difference_percent', 'forma'])
-
 function_selector.grid(column=1, row=1, ipadx=25, padx=50)
 function_selector.set('Seleziona risultato')
 
-launch_button = tk.Button(window, text='Genera Risultato')
-launch_button.grid(column=0, row=3, columnspan=3, pady=20)
-
 
 def launch_function(event):
-    # get the selected function name
+    # prende il nome della funzione selezionata
     function_name = function_selector.get()
-    # get the selected function
+    # prende la funzione selezionata
     selected_function = getattr(cb, function_name)
-    # call the selected function
+    # chiama la funzione selezionata
     selected_function(event)
-    # sleep(10)
 
 
-dbs = {'Napoli': '113', 'Inter': '108', 'Atalanta': '102', 'Roma': '100', 'Milan': '98', 'Lazio': '110', 'Torino': '586', 'Udinese': '115', 'Juventus': '109', 'Monza': '5911', 'Bologna': '103',
-       'Empoli': '445', 'Lecce': '5890', 'Fiorentina': '99', 'Sassuolo': '471', 'Salernitana': '455', 'Spezia Calcio': '488', 'Verona': '450', 'Sampdoria': '584', 'Cremonese': '457'}
-
-
-# bind the launch button to the launch_function
+# bottone che lancia le funzioni che vengono selezionate
+launch_button = tk.Button(window, text='Genera Risultato')
+launch_button.grid(column=0, row=3, columnspan=3, pady=20)
 launch_button.bind('<Button-1>', launch_function)
 
+
+# logo dell'applicazione
 logo = tk.PhotoImage(file='logo.png')
 labelLogo = tk.Label(window, image=logo)
-
 labelLogo.grid(column=0, columnspan=4, row=0, padx=20)
 
-# combobox working in new way with dictionary
+
+# db utile alla creazione della select nell'interfaccia
+dbs = {'Napoli': '113', 'Inter': '108', 'Atalanta': '102', 'Roma': '100', 'Milan': '98',
+       'Lazio': '110', 'Torino': '586', 'Udinese': '115', 'Juventus': '109', 'Monza': '5911', 'Bologna': '103',
+       'Empoli': '445', 'Lecce': '5890', 'Fiorentina': '99', 'Sassuolo': '471', 'Salernitana': '455',
+       'Spezia Calcio': '488', 'Verona': '450', 'Sampdoria': '584', 'Cremonese': '457'}
+# select delle squadre
 cb = MyCombobox(window, state='readonly', values=dbs)
 cb.grid(column=0, row=1, ipadx=10, padx=50)
 cb.set('Seleziona squadra')
-# cb.bind('<<ComboboxSelected>>', cb.goal_odd_even)
 
 
 window.mainloop()

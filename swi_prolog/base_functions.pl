@@ -203,7 +203,7 @@ percent_win(Team, Result, Cod):-
 %trova la percentuale di sconfitta di una squadra
 percent_lose(Team, Result, Cod):-
     start(Team, Cod, Result4),
-    total_lose(Team, Result1, Cod, Result4),
+    total_lose(Team, Result1, Result4),
     total_matches_played(Team, Result2, Result4),
     Result3 is Result1 / Result2,
     Result is Result3 * 100.
@@ -211,7 +211,7 @@ percent_lose(Team, Result, Cod):-
 %trova la percentuale di pareggio di una squadra
 percent_draws(Team, Result, Cod):-
     start(Team, Cod, Result4),
-    total_draws(Team, Result1, Cod, Result4),
+    total_draws(Team, Result1, Result4),
     total_matches_played(Team, Result2,Result4),
     Result3 is Result1 / Result2,
     Result is Result3 * 100.
@@ -225,6 +225,7 @@ not_played_home(Team,Result, Result2):-
     findall(Team,Result2: matchSA(Team,_,null,_,_),Result).
 
 %trova il totale delle partite effettivamente giocate in casa
+%Result2 è il nome del database che viene utilizzato
 tot_played_home(Team,Play_home, Result2):-
     played_home(Team,Result, Result2),
     not_played_home(Team,Result1, Result2),
@@ -284,7 +285,7 @@ position_difference_percent(RisPercentuale,TeamName, Cod, Home, Away):-
 
 %calcola la percentuale della forma di una squadra, grazie al numero di "W" delle ultime cinque partite
 forma(Team, NumW):-
-    start_classifica
+    start_classifica,
     classifica(_,Team,_,X,_),
     split_string(X,',',',',Y),
     count_occurrences(Y,"W",NumW1),
